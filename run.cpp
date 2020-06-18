@@ -19,6 +19,8 @@ int main(int argc, char** argv)
    // try to open the file
    while(ifs>>input_file_name)
    {
+      if(input_file_name.BeginsWith("#")) continue; //file name begins with # will pass.
+
       TFile* file= new TFile(input_file_name);
       TTree* tree= (TTree*) file->Get(input_tree_name);
       if(!tree) cout<<"can't open: "<<input_file_name<<'\n';

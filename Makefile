@@ -27,7 +27,7 @@ ana_base.o: ana_base.C ana_base.h
 ZZZ_ana.o: ZZZ_ana.cpp ana.h
 	$(CC) -c ZZZ_ana.cpp -o ZZZ_ana.o
 
-WZZ_ana.o: WWZ_ana.cpp ana.h
+WZZ_ana.o: WZZ_ana.cpp ana.h
 	$(CC) -c WZZ_ana.cpp -o WZZ_ana.o
 
 WWZ_ana.o: WWZ_ana.cpp ana.h

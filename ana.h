@@ -6,6 +6,7 @@
 #include"TH1F.h"
 #include<vector>
 #include"TLorentzVector.h"
+#define Z_mass 91187.6
 using namespace std;
 
 class ana:public ana_base
@@ -15,10 +16,10 @@ class ana:public ana_base
       vector<TLorentzVector> v_l_tlv;
       vector<int>            v_l_pid;
       vector<float>          v_l_wgt;
-      vector<int>            W_id;
-      map<int,int>           Z_pair_id;
+      vector<int>            v_W_id;
+      vector<pair<int,int> > v_Z_pair;
+      vector<int>            v_ignore;
       map<TString,bool>      Cutflow;
-      const float            Z_mass=91187.6; //MeV
 // ZZZ
       bool SFOS_Cut();
       bool ZZZ_Cut();
@@ -36,8 +37,8 @@ class ana:public ana_base
       void Terminate();
       void Loop_initialize();
       void Loop_terminate();
-//univeral functions
-      pair<int, int> Find_best_Z_pair(vector<int> v_ignore);      
+//universal functions
+      void Find_Z_pair();      
 
    private:
       TFile* _output;
