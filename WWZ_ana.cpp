@@ -45,7 +45,7 @@ bool ana::WWZ_Cut()
    }
 
    //Z_onshell
-   if(abs((v_l_tlv[v_Z_pair[0].first]+v_l_tlv[v_Z_pair[0].second]).M()-Z_mass)<10e3) cutflow("WWZ_4l").pass("4l","Z_window",wgt);
+   if(abs((v_l_tlv[v_Z_pair[0].first]+v_l_tlv[v_Z_pair[0].second]).M()-Z_mass)<15e3) cutflow("WWZ_4l").pass("4l","Z_window",wgt);
 
    //dilepton
    bool dilepton=true;
