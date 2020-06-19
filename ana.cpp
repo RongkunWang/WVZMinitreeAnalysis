@@ -2,6 +2,7 @@
 #include "ana.h"
 #include <iostream>
 using namespace std;
+///////////////////////////////////////////////////below is universal functions for help////////////////////////////////////////////////
 void ana::Find_Z_pair()
 {
    int i,j;
@@ -28,7 +29,18 @@ void ana::Find_Z_pair()
    }
 };
 
+bool ana::operator()(int i, int j)
+{
+   return v_l_tlv[i].Pt()>v_l_tlv[j].Pt();
+}
+////////////////////////////////////////////////below is major part of ana///////////////////////////////////////////////////////////
 ana::ana(TTree* tree): ana_base(tree){}
+
+CutFlowTool& ana::cutflow(string n, bool ini)
+{
+   if(ini) m_CutFlowTool.emplace(n,n);
+   return m_CutFlowTool.at(n);
+}
 
 void ana::Loop()
 {
@@ -69,17 +81,33 @@ void ana::Loop_terminate()
    v_W_id.clear();
    v_Z_pair.clear();
    v_ignore.clear();
-   Cutflow.clear();
 }
 
 
 void ana::Initialize()
 {
    _output= new TFile("output.root","recreate");
+   
+   cutflow("WWZ_4l",true)
+      .regFlow("4l","WWZ 4l channel flow")
+      .regCut("All")
+      .regCut("6l","",true)
+      .regCut("5l","",true)
+      .regCut("3l","",true)
+      .regCut("4l")
+      .regCut("Pt")
+      .regCut("Z_window")
+      .regCut("Dilepton")
+      .regCut("B_veto60","",true)
+      .regCut("B_veto70","",true)
+      .regCut("B_veto77","",true)
+      .regCut("B_veto85","",true);
+
 }
 
 void ana::Terminate()
 {
+   cutflow("WWZ_4l").print(std::cout);
    _output->Write("All");
    _output->Close();
 }
