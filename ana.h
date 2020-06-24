@@ -15,14 +15,15 @@ class ana:public ana_base
 {
    public:
 // variables
+      float                        wgt;
       vector<TLorentzVector>       v_l_tlv;
       vector<int>                  v_l_pid;
       vector<float>                v_l_wgt;
-      vector<int>                  v_W_id;
       vector<pair<int,int> >       v_Z_pair;
       vector<int>                  v_ignore;
+// initial cut
+      bool initial_Cut();
 // ZZZ
-      bool SFOS_Cut();
       bool ZZZ_Cut();
       void ZZZ_operation();
 // WZZ
@@ -41,7 +42,8 @@ class ana:public ana_base
       void Loop_terminate();
 //universal functions
       void Find_Z_pair();      
-      bool operator()(int i, int j);
+      void Bjet_Cut(string s_flow, string s_cut);
+//      bool operator()(int i, int j);
    private:
       TFile*                       _output;
       map<string, TH1F*>           map_hist;

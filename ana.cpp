@@ -30,10 +30,71 @@ void ana::Find_Z_pair()
    }
 };
 
+bool ana::initial_Cut()
+{
+   wgt= weight*w_sf_jvt;
+   cutflow("initial").pass("initial","All",wgt);
+   // lepton number > 3
+   if(v_l_pid.size()<=3) return false;
+   cutflow("initial").pass("initial",">3l",wgt);
+   // at least one SFOS pair
+   Find_Z_pair();
+   if(v_Z_pair.size()==0) return false;
+   cutflow("initial").pass("initial","1_SFOS",wgt);
+   // Z window 15 GeV
+   if(abs((v_l_tlv[v_Z_pair[0].first]+v_l_tlv[v_Z_pair[0].second]).M()-Z_mass)>15e3) return false;
+   cutflow("initial").pass("initial","Z_window",wgt);
+   return true;
+}
+
+void ana::Bjet_Cut(string s_flow, string s_cut)
+{
+   bool btag_veto;
+   float btag_wgt;
+   int njet=v_j_tlv->size();
+
+   btag_wgt=1;
+   btag_veto=true;
+   for(int i=0;i<njet;i++)
+   {
+      if(v_j_btag60->at(i)) btag_veto=false;
+      btag_wgt*=v_j_wgt_btag60->at(i);
+   }
+   if(btag_veto) cutflow(s_flow).pass(s_cut,"B_veto60",wgt*btag_wgt);
+
+   btag_wgt=1;
+   btag_veto=true;
+   for(int i=0;i<njet;i++)
+   {
+      if(v_j_btag70->at(i)) btag_veto=false;
+      btag_wgt*=v_j_wgt_btag70->at(i);
+   }
+   if(btag_veto) cutflow(s_flow).pass(s_cut,"B_veto70",wgt*btag_wgt);
+
+   btag_wgt=1;
+   btag_veto=true;
+   for(int i=0;i<njet;i++)
+   {
+      if(v_j_btag77->at(i)) btag_veto=false;
+      btag_wgt*=v_j_wgt_btag77->at(i);
+   }
+   if(btag_veto) cutflow(s_flow).pass(s_cut,"B_veto77",wgt*btag_wgt);
+
+   btag_wgt=1;
+   btag_veto=true;
+   for(int i=0;i<njet;i++)
+   {
+      if(v_j_btag85->at(i)) btag_veto=false;
+      btag_wgt*=v_j_wgt_btag85->at(i);
+   }
+   if(btag_veto) cutflow(s_flow).pass(s_cut,"B_veto85",wgt*btag_wgt);
+}
+/*
 bool ana::operator()(int i, int j)
 {
    return v_l_tlv[i].Pt()>v_l_tlv[j].Pt();
 }
+*/
 ////////////////////////////////////////////////below is major part of ana///////////////////////////////////////////////////////////
 ana::ana(TTree* tree): ana_base(tree){}
 
@@ -54,14 +115,19 @@ void ana::Loop()
       Long64_t ientry = LoadTree(jentry);
       if (ientry < 0) break;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
-      // if (Cut(ientry) < 0) continue;
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
       Loop_initialize();
+
       if(ientry%10000==0) std::cout<<"processing event: "<<ientry<<'\n';
       if(ientry>100000) break;
+
+      if(initial_Cut()) 
       if     (ZZZ_Cut()){ZZZ_operation();}
       else if(WZZ_Cut()){WZZ_operation();}
       else if(WWZ_Cut()){WWZ_operation();}
+
       Loop_terminate();
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
    }    
    Terminate();
 } 
@@ -81,24 +147,54 @@ void ana::Loop_terminate()
    v_l_tlv.clear();
    v_l_pid.clear();
    v_l_wgt.clear();
-/*
-   v_W_id.clear();
    v_Z_pair.clear();
    v_ignore.clear();
-*/
 }
 
 
 void ana::Initialize()
 {
    _output= new TFile("output.root","recreate");
-   
-   cutflow("WWZ_4l",true)
-      .regFlow("4l","WWZ 4l channel flow")
+
+   cutflow("initial",true)
+      .regFlow("initial","initial selection")
+      .regCut("All")
+      .regCut(">3l")
+      .regCut("1_SFOS")
+      .regCut("Z_window");   
+   cutflow("ZZZ",true)
+      .regFlow("ZZZ","cutflow of ZZZ channel")
+      .regCut("6l")
+      .regCut("3_SFOS");
+   cutflow("WZZ",true)
+      .regFlow("WZZ","cutflow of WZZ channel")
       .regCut("All")
       .regCut("6l","",true)
       .regCut("5l","",true)
+      .regCut("2_SFOS")
+      .regCut("Z_window")
+      .regCut("B_veto60","",true)
+      .regCut("B_veto70","",true)
+      .regCut("B_veto77","",true)
+      .regCut("B_veto85","",true);
+   cutflow("WWZ",true)
+      .regFlow("WWZ","cutflow of WWZ channel")
+      .regCut("All")
+      .regCut("6l","",true)
+      .regCut("5l","",true)
+      .regCut("4l","",true)
+      .regCut("Dilepton")
+      .regCut("B_veto60","",true)
+      .regCut("B_veto70","",true)
+      .regCut("B_veto77","",true)
+      .regCut("B_veto85","",true);
+/*
+   cutflow("WWZ_4l",true)
+      .regFlow("4l","WVZ cutflow")
+      .regCut("All")
       .regCut("3l","",true)
+      .regCut("6l","",true)
+      .regCut("5l","",true)
       .regCut("4l")
       .regCut("Pt")
       .regCut("Z_window")
@@ -107,12 +203,20 @@ void ana::Initialize()
       .regCut("B_veto70","",true)
       .regCut("B_veto77","",true)
       .regCut("B_veto85","",true);
-
+   cutflow("WVZ_5l",true)
+      .regFlow("5l","WVZ 5l cutflow")
+      .regCut("5l");
+*/
 }
 
 void ana::Terminate()
 {
-   cutflow("WWZ_4l").print(std::cout);
+   cutflow("initial").print(std::cout);
+   cutflow("ZZZ").print(std::cout);
+   cutflow("WZZ").print(std::cout);
+   cutflow("WWZ").print(std::cout);
+//   cutflow("WWZ_4l").print(std::cout);
+//   cutflow("WVZ_5l").print(std::cout);
    _output->Write("All");
    _output->Close();
 }

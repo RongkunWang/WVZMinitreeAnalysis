@@ -1,26 +1,20 @@
 #define ZZZ_ana_cxx
 #include "ana.h"
-bool ana::SFOS_Cut()
-{
-// true: e_total_charge==0 && m_total_charge==0
-// false: else
-   int i, sum=0;
-   int n_elec=v_e_pid->size();
-   int n_muon=v_m_pid->size();
-   for(i=0; i<n_elec; i++) sum+= (*v_e_pid)[i];
-   if(sum!=0) return false;
-   sum=0;
-   for(i=0; i<n_muon; i++) sum+= (*v_m_pid)[i];
-   if(sum!=0) return false;
-   return true;
-}
-
 bool ana::ZZZ_Cut()
 {
-   v_W_id.clear();
-   v_Z_pair.clear();
-   v_ignore.clear();
-   return false;
+   // 6 leptons
+   if(v_l_pid.size()!=6) return false;
+   cutflow("ZZZ").pass("ZZZ","6l",wgt);
+   // electron total charge = 0
+   int sum=0;
+   for(int i=0; i<v_e_pid->size(); i++) sum+= (*v_e_pid)[i];
+   if(sum!=0) return false;
+   // muon total charge =0
+   sum=0;
+   for(int i=0; i<v_m_pid->size(); i++) sum+= (*v_m_pid)[i];
+   if(sum!=0) return false;
+   cutflow("ZZZ").pass("ZZZ","3_SFOS",wgt);
+   return true;
 }
 
 void ana::ZZZ_operation()
