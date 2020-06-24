@@ -1,6 +1,7 @@
 #define ana_cxx
 #include "ana.h"
 #include <iostream>
+#include <time.h>
 using namespace std;
 ///////////////////////////////////////////////////below is universal functions for help////////////////////////////////////////////////
 void ana::Find_Z_pair()
@@ -55,6 +56,8 @@ void ana::Loop()
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
       Loop_initialize();
+      if(ientry%10000==0) std::cout<<"processing event: "<<ientry<<'\n';
+      if(ientry>100000) break;
       if     (ZZZ_Cut()){ZZZ_operation();}
       else if(WZZ_Cut()){WZZ_operation();}
       else if(WWZ_Cut()){WWZ_operation();}
@@ -78,9 +81,11 @@ void ana::Loop_terminate()
    v_l_tlv.clear();
    v_l_pid.clear();
    v_l_wgt.clear();
+/*
    v_W_id.clear();
    v_Z_pair.clear();
    v_ignore.clear();
+*/
 }
 
 

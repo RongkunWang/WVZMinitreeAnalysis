@@ -17,6 +17,9 @@ bool ana::SFOS_Cut()
 
 bool ana::ZZZ_Cut()
 {
+   v_W_id.clear();
+   v_Z_pair.clear();
+   v_ignore.clear();
    return false;
 }
 
