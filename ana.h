@@ -16,6 +16,7 @@ class ana:public ana_base
    public:
 // variables
       float                        wgt;
+      vector<float>                v_Z_wgt; // weight for Z leptons, related to v_Z_pair
       vector<TLorentzVector>       v_l_tlv;
       vector<int>                  v_l_pid;
       vector<float>                v_l_wgt;
@@ -42,7 +43,7 @@ class ana:public ana_base
       void Loop_terminate();
 //universal functions
       void Find_Z_pair();      
-      void Bjet_Cut(string s_flow, string s_cut);
+      void Bjet_Cut(string s_flow, string s_cut, float wgt_base);
 //      bool operator()(int i, int j);
    private:
       TFile*                       _output;

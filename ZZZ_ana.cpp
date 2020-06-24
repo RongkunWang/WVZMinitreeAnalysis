@@ -4,7 +4,10 @@ bool ana::ZZZ_Cut()
 {
    // 6 leptons
    if(v_l_pid.size()!=6) return false;
-   cutflow("ZZZ").pass("ZZZ","6l",wgt);
+   float ZZZ_wgt= wgt;
+   for(int i=0;i<v_l_pid.size();i++)
+      ZZZ_wgt*=v_l_wgt[i];
+   cutflow("ZZZ").pass("ZZZ","6l",ZZZ_wgt);
    // electron total charge = 0
    int sum=0;
    for(int i=0; i<v_e_pid->size(); i++) sum+= (*v_e_pid)[i];
@@ -13,7 +16,7 @@ bool ana::ZZZ_Cut()
    sum=0;
    for(int i=0; i<v_m_pid->size(); i++) sum+= (*v_m_pid)[i];
    if(sum!=0) return false;
-   cutflow("ZZZ").pass("ZZZ","3_SFOS",wgt);
+   cutflow("ZZZ").pass("ZZZ","3_SFOS",ZZZ_wgt);
    return true;
 }
 

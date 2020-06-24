@@ -27,6 +27,8 @@ void ana::Find_Z_pair()
       v_ignore.insert(v_ignore.end(),Z_pair_temp.first);
       v_ignore.insert(v_ignore.end(),Z_pair_temp.second);
       v_Z_pair.insert(v_Z_pair.end(),Z_pair_temp);
+      float Z_wgt= v_l_wgt[Z_pair_temp.first] * v_l_wgt[Z_pair_temp.second];
+      v_Z_wgt.insert(v_Z_wgt.end(),Z_wgt);
    }
 };
 
@@ -40,14 +42,14 @@ bool ana::initial_Cut()
    // at least one SFOS pair
    Find_Z_pair();
    if(v_Z_pair.size()==0) return false;
-   cutflow("initial").pass("initial","1_SFOS",wgt);
+   cutflow("initial").pass("initial","1_SFOS",wgt*v_Z_wgt[0]);
    // Z window 15 GeV
    if(abs((v_l_tlv[v_Z_pair[0].first]+v_l_tlv[v_Z_pair[0].second]).M()-Z_mass)>15e3) return false;
-   cutflow("initial").pass("initial","Z_window",wgt);
+   cutflow("initial").pass("initial","Z_window",wgt*v_Z_wgt[0]);
    return true;
 }
 
-void ana::Bjet_Cut(string s_flow, string s_cut)
+void ana::Bjet_Cut(string s_flow, string s_cut, float wgt_base)
 {
    bool btag_veto;
    float btag_wgt;
@@ -60,7 +62,7 @@ void ana::Bjet_Cut(string s_flow, string s_cut)
       if(v_j_btag60->at(i)) btag_veto=false;
       btag_wgt*=v_j_wgt_btag60->at(i);
    }
-   if(btag_veto) cutflow(s_flow).pass(s_cut,"B_veto60",wgt*btag_wgt);
+   if(btag_veto) cutflow(s_flow).pass(s_cut,"B_veto60",wgt_base*btag_wgt);
 
    btag_wgt=1;
    btag_veto=true;
@@ -69,7 +71,7 @@ void ana::Bjet_Cut(string s_flow, string s_cut)
       if(v_j_btag70->at(i)) btag_veto=false;
       btag_wgt*=v_j_wgt_btag70->at(i);
    }
-   if(btag_veto) cutflow(s_flow).pass(s_cut,"B_veto70",wgt*btag_wgt);
+   if(btag_veto) cutflow(s_flow).pass(s_cut,"B_veto70",wgt_base*btag_wgt);
 
    btag_wgt=1;
    btag_veto=true;
@@ -78,7 +80,7 @@ void ana::Bjet_Cut(string s_flow, string s_cut)
       if(v_j_btag77->at(i)) btag_veto=false;
       btag_wgt*=v_j_wgt_btag77->at(i);
    }
-   if(btag_veto) cutflow(s_flow).pass(s_cut,"B_veto77",wgt*btag_wgt);
+   if(btag_veto) cutflow(s_flow).pass(s_cut,"B_veto77",wgt_base*btag_wgt);
 
    btag_wgt=1;
    btag_veto=true;
@@ -87,7 +89,7 @@ void ana::Bjet_Cut(string s_flow, string s_cut)
       if(v_j_btag85->at(i)) btag_veto=false;
       btag_wgt*=v_j_wgt_btag85->at(i);
    }
-   if(btag_veto) cutflow(s_flow).pass(s_cut,"B_veto85",wgt*btag_wgt);
+   if(btag_veto) cutflow(s_flow).pass(s_cut,"B_veto85",wgt_base*btag_wgt);
 }
 /*
 bool ana::operator()(int i, int j)
@@ -147,8 +149,12 @@ void ana::Loop_terminate()
    v_l_tlv.clear();
    v_l_pid.clear();
    v_l_wgt.clear();
-   v_Z_pair.clear();
-   v_ignore.clear();
+   if(v_Z_pair.size()!=0)
+   {
+      v_Z_pair.clear();
+      v_ignore.clear();
+      v_Z_wgt.clear();
+   }
 }
 
 
