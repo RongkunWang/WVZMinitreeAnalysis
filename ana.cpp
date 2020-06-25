@@ -2,6 +2,7 @@
 #include "ana.h"
 #include <iostream>
 #include <time.h>
+#include <fstream>
 using namespace std;
 ///////////////////////////////////////////////////below is universal functions for help////////////////////////////////////////////////
 void ana::Find_Z_pair()
@@ -120,8 +121,8 @@ void ana::Loop()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
       Loop_initialize();
 
-      if(ientry%10000==0) std::cout<<"processing event: "<<ientry<<'\n';
-      if(ientry>100000) break;
+      if(ientry%100000==0) std::cout<<"processing event: "<<ientry<<'\n';
+//      if(ientry>100000) break;
 
       if(initial_Cut()) 
       if     (ZZZ_Cut()){ZZZ_operation();}
@@ -217,10 +218,12 @@ void ana::Initialize()
 
 void ana::Terminate()
 {
-   cutflow("initial").print(std::cout);
-   cutflow("ZZZ").print(std::cout);
-   cutflow("WZZ").print(std::cout);
-   cutflow("WWZ").print(std::cout);
+   std::ofstream ofs("cutflow_info.txt",std::ofstream::out);
+   cutflow("initial").print(ofs);
+   cutflow("ZZZ").print(ofs);
+   cutflow("WZZ").print(ofs);
+   cutflow("WWZ").print(ofs);
+   ofs.close();
 //   cutflow("WWZ_4l").print(std::cout);
 //   cutflow("WVZ_5l").print(std::cout);
    _output->Write("All");
