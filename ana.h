@@ -44,7 +44,6 @@ class ana:public ana_base
 //universal functions
       void Find_Z_pair();      
       void Bjet_Cut(string s_flow, string s_cut, float wgt_base);
-//      bool operator()(int i, int j);
    private:
       TFile*                       _output;
       map<string, TH1F*>           map_hist;

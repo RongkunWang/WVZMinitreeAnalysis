@@ -92,12 +92,6 @@ void ana::Bjet_Cut(string s_flow, string s_cut, float wgt_base)
    }
    if(btag_veto) cutflow(s_flow).pass(s_cut,"B_veto85",wgt_base*btag_wgt);
 }
-/*
-bool ana::operator()(int i, int j)
-{
-   return v_l_tlv[i].Pt()>v_l_tlv[j].Pt();
-}
-*/
 ////////////////////////////////////////////////below is major part of ana///////////////////////////////////////////////////////////
 ana::ana(TTree* tree): ana_base(tree){}
 
@@ -195,25 +189,6 @@ void ana::Initialize()
       .regCut("B_veto70","",true)
       .regCut("B_veto77","",true)
       .regCut("B_veto85","",true);
-/*
-   cutflow("WWZ_4l",true)
-      .regFlow("4l","WVZ cutflow")
-      .regCut("All")
-      .regCut("3l","",true)
-      .regCut("6l","",true)
-      .regCut("5l","",true)
-      .regCut("4l")
-      .regCut("Pt")
-      .regCut("Z_window")
-      .regCut("Dilepton")
-      .regCut("B_veto60","",true)
-      .regCut("B_veto70","",true)
-      .regCut("B_veto77","",true)
-      .regCut("B_veto85","",true);
-   cutflow("WVZ_5l",true)
-      .regFlow("5l","WVZ 5l cutflow")
-      .regCut("5l");
-*/
 }
 
 void ana::Terminate()
@@ -224,8 +199,6 @@ void ana::Terminate()
    cutflow("WZZ").print(ofs);
    cutflow("WWZ").print(ofs);
    ofs.close();
-//   cutflow("WWZ_4l").print(std::cout);
-//   cutflow("WVZ_5l").print(std::cout);
    _output->Write("All");
    _output->Close();
 }
