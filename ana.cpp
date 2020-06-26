@@ -95,6 +95,21 @@ void ana::Bjet_Cut(string s_flow, string s_cut, float wgt_base)
    }
    if(btag_veto) cutflow(s_flow).pass(s_cut,"B_veto85",wgt_base*btag_wgt);
 }
+
+void ana::lepton_pt_sort()
+{
+   int temp;
+   for(int i=0;i<v_l_pid.size();i++)
+      v_l_order.insert(v_l_order.end(),i);
+   for(int i=0;i<v_l_pid.size();i++)   
+      for(int j=i+1;j<v_l_pid.size();j++)      
+         if(v_l_tlv[v_l_order[i]].Pt()<v_l_tlv[v_l_order[j]].Pt())
+         {
+            temp=v_l_order[i];
+            v_l_order[i]=v_l_order[j];
+            v_l_order[j]=temp;
+         }  
+}
 ////////////////////////////////////////////////below is major part of ana///////////////////////////////////////////////////////////
 ana::ana(TTree* tree): ana_base(tree){}
 
@@ -106,7 +121,7 @@ CutFlowTool& ana::cutflow(string s, bool ini)
 //changemark
 TH1F* ana::makehist(TString s, bool ini)
 {
-   if(ini) m_hist.emplace(s,new TH1F(s,s,40,0,400));
+   if(ini) m_hist.emplace(s,new TH1F(s,s,20,0,400));
    return m_hist.at(s);
 }
 
@@ -134,8 +149,8 @@ void ana::channel_fillhist(TString channel_name, int nZ)
       makehist(channel_name+"_Z_mass_"+s_number[i])->Fill(Z_tlv.M()/1000);
       makehist(channel_name+"_Z_pt_"+s_number[i])->Fill(Z_tlv.Pt()/1000);
    }
-   makehist(channel_name+"_leading_lepton_pt")->Fill(v_l_tlv[0].Pt()/1000);
-   makehist(channel_name+"_subleading_lepton_pt")->Fill(v_l_tlv[1].Pt()/1000);
+   makehist(channel_name+"_leading_lepton_pt")->Fill(v_l_tlv[v_l_order[0]].Pt()/1000);
+   makehist(channel_name+"_subleading_lepton_pt")->Fill(v_l_tlv[v_l_order[1]].Pt()/1000);
 
 }
 
@@ -175,6 +190,7 @@ void ana::Loop_initialize()
    v_l_pid.insert(v_l_pid.end(), v_m_pid->begin(), v_m_pid->end());
    v_l_wgt.insert(v_l_wgt.end(), v_e_wgt->begin(), v_e_wgt->end());
    v_l_wgt.insert(v_l_wgt.end(), v_m_wgt->begin(), v_m_wgt->end());
+   lepton_pt_sort();
 }
 
 void ana::Loop_terminate()
@@ -182,6 +198,7 @@ void ana::Loop_terminate()
    v_l_tlv.clear();
    v_l_pid.clear();
    v_l_wgt.clear();
+   v_l_order.clear();
    if(v_Z_pair.size()!=0)
    {
       v_Z_pair.clear();
