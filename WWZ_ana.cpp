@@ -27,4 +27,5 @@ bool ana::WWZ_Cut()
 
 void ana::WWZ_operation()
 {
+   if(cutflow("WWZ").isPass("WWZ","B_veto60")) channel_fillhist("WWZ",1);
 }

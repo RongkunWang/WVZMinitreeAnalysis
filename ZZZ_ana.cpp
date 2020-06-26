@@ -22,4 +22,5 @@ bool ana::ZZZ_Cut()
 
 void ana::ZZZ_operation()
 {
+   if(cutflow("ZZZ").isPass("ZZZ","3_SFOS")) channel_fillhist("ZZZ",3);
 }

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <time.h>
 #include <fstream>
+#include <TLorentzVector.h>
 using namespace std;
 ///////////////////////////////////////////////////below is universal functions for help////////////////////////////////////////////////
 void ana::Find_Z_pair()
@@ -41,6 +42,8 @@ bool ana::initial_Cut()
    if(v_l_pid.size()<=3) return false;
    cutflow("initial").pass("initial",">3l",wgt);
    // at least one SFOS pair
+   Find_Z_pair();
+   Find_Z_pair();
    Find_Z_pair();
    if(v_Z_pair.size()==0) return false;
    cutflow("initial").pass("initial","1_SFOS",wgt*v_Z_wgt[0]);
@@ -95,10 +98,45 @@ void ana::Bjet_Cut(string s_flow, string s_cut, float wgt_base)
 ////////////////////////////////////////////////below is major part of ana///////////////////////////////////////////////////////////
 ana::ana(TTree* tree): ana_base(tree){}
 
-CutFlowTool& ana::cutflow(string n, bool ini)
+CutFlowTool& ana::cutflow(string s, bool ini)
 {
-   if(ini) m_CutFlowTool.emplace(n,n);
-   return m_CutFlowTool.at(n);
+   if(ini) m_CutFlowTool.emplace(s,s);
+   return m_CutFlowTool.at(s);
+}
+//changemark
+TH1F* ana::makehist(TString s, bool ini)
+{
+   if(ini) m_hist.emplace(s,new TH1F(s,s,40,0,400));
+   return m_hist.at(s);
+}
+
+void ana::channel_makehist(TString channel_name, int nZ)
+{
+   if(nZ>3) return;
+   TString s_number[3]={"first","second","third"};
+   for(int i=0;i<nZ;i++)
+   {
+      makehist(channel_name+"_Z_mass_"+s_number[i],true);
+      makehist(channel_name+"_Z_pt_"+s_number[i],true);
+   }
+   makehist(channel_name+"_leading_lepton_pt",true);
+   makehist(channel_name+"_subleading_lepton_pt",true);
+}
+
+void ana::channel_fillhist(TString channel_name, int nZ)
+{
+   if(nZ>3) return;
+   TString s_number[3]={"first","second","third"};
+   TLorentzVector Z_tlv;
+   for(int i=0;i<nZ;i++)
+   {
+      Z_tlv=v_l_tlv[v_Z_pair[i].first]+v_l_tlv[v_Z_pair[i].second];
+      makehist(channel_name+"_Z_mass_"+s_number[i])->Fill(Z_tlv.M()/1000);
+      makehist(channel_name+"_Z_pt_"+s_number[i])->Fill(Z_tlv.Pt()/1000);
+   }
+   makehist(channel_name+"_leading_lepton_pt")->Fill(v_l_tlv[0].Pt()/1000);
+   makehist(channel_name+"_subleading_lepton_pt")->Fill(v_l_tlv[1].Pt()/1000);
+
 }
 
 void ana::Loop()
@@ -189,6 +227,10 @@ void ana::Initialize()
       .regCut("B_veto70","",true)
       .regCut("B_veto77","",true)
       .regCut("B_veto85","",true);
+
+   channel_makehist("ZZZ",3);
+   channel_makehist("WZZ",2);
+   channel_makehist("WWZ",1);
 }
 
 void ana::Terminate()

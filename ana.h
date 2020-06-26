@@ -35,18 +35,22 @@ class ana:public ana_base
       void WWZ_operation();
 //Loop  functions
       ana(TTree* tree);
-      CutFlowTool& cutflow(string n="NOMINAL",bool ini=false);
       void Loop();
       void Initialize();
       void Terminate();
       void Loop_initialize();
       void Loop_terminate();
 //universal functions
-      void Find_Z_pair();      
-      void Bjet_Cut(string s_flow, string s_cut, float wgt_base);
+      CutFlowTool&  cutflow(string s="NOMINAL",bool ini=false);
+      TH1F*         makehist(TString s="NULL",bool ini=false);
+      void          channel_makehist(TString channel_name, int nZ=0);
+      void          channel_fillhist(TString channel_name, int nZ=0);
+      void          Find_Z_pair();      
+      void          Bjet_Cut(string s_flow, string s_cut, float wgt_base);
+
    private:
       TFile*                       _output;
-      map<string, TH1F*>           map_hist;
+      map<TString, TH1F*>          m_hist;
       map<string,CutFlowTool>      m_CutFlowTool;
 };
 #endif
