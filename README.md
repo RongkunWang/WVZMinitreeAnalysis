@@ -1,7 +1,7 @@
 WVZ minitree analysis
 ==============================
 
-Basic information
+1. Basic information
 
 ----------------------------------------------------
 
@@ -11,7 +11,7 @@ This code can:
 
 ----------------------------------------------------
 
-Code structure
+2. Code structure
 
 ----------------------------------------------------
 -/source: source code, including cpp and header files
