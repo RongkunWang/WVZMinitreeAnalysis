@@ -122,8 +122,12 @@ void ana::lepton_pt_sort()
 ////////////////////////////////////////////////////constructors/////////////////////////////////////////////////////////////////////
 ana::ana(TTree* tree): ana_base(tree){}
 
-ana::ana(TTree* tree,vector<float> iv_sumofwgt,vector<float>iv_lumi,vector<float>iv_xs_eff): 
-   ana_base(tree),v_sumofwgt(iv_sumofwgt),v_lumi(iv_lumi),v_xs_eff(iv_xs_eff){}
+ana::ana(TTree* tree, TString output_file_name, vector<float> iv_sumofwgt, vector<float>iv_lumi, vector<float>iv_xs_eff): 
+   ana_base(tree),
+   _output_file_name(output_file_name),
+   v_sumofwgt(iv_sumofwgt),
+   v_lumi(iv_lumi),
+   v_xs_eff(iv_xs_eff){}
 //////////////////////////////////////////////////////cutflow///////////////////////////////////////////////////////////////////////
 CutFlowTool& ana::cutflow(string s, bool ini)
 {
@@ -240,7 +244,7 @@ void ana::Loop_terminate()
 
 void ana::Initialize()
 {
-   _output= new TFile("output.root","recreate");
+   _output= new TFile("../plot/root/"+_output_file_name,"recreate");
    file_iter=-1;
    cutflow("initial",true)
       .regFlow("initial","initial selection")

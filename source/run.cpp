@@ -13,6 +13,12 @@ int main(int argc, char** argv)
    TString input_file_name;
    TString input_tree_name="tree_NOMINAL";
    TString input_hist_name="sumWeight";
+   TString output_file_name="output.root";
+   if(argc>1) 
+   {
+      output_file_name= argv[1];
+   }
+   std::cout<<"output file name is: "<<output_file_name<<'\n';
    // lumi, xs and eff data
    map<TString, float> m_lumi={{"r9364",36207.705},{"r10201",44307.223},{"r10724",58450.261}};
    map<TString, float> m_xs_eff;
@@ -75,7 +81,7 @@ int main(int argc, char** argv)
       delete file;
    }
 
-   ana* myanalysis= new ana(ch,iv_sumofwgt,iv_lumi,iv_xs_eff);
+   ana* myanalysis= new ana(ch,output_file_name,iv_sumofwgt,iv_lumi,iv_xs_eff);
    myanalysis->Loop();
 }
 
