@@ -244,7 +244,7 @@ void ana::Loop_terminate()
 
 void ana::Initialize()
 {
-   _output= new TFile("../plot/root/"+_output_file_name,"recreate");
+   _output= new TFile("../plot/root/"+_output_file_name+".root","recreate");
    file_iter=-1;
    cutflow("initial",true)
       .regFlow("initial","initial selection")
@@ -293,7 +293,7 @@ void ana::Initialize()
 
 void ana::Terminate()
 {
-   std::ofstream _ofs_cutflow("cutflow_info.txt",std::ofstream::out);   
+   std::ofstream _ofs_cutflow("./cutflowinfo/"+_output_file_name+".txt",std::ofstream::out);   
    cutflow("initial").print(_ofs_cutflow);
    cutflow("ZZZ").print(_ofs_cutflow);
    cutflow("WZZ").print(_ofs_cutflow);
