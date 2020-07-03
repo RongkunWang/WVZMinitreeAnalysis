@@ -38,7 +38,7 @@ void ana::Find_Z_pair()
 
 bool ana::initial_Cut()
 {
-   wgt= weight*w_sf_jvt;
+   wgt= weight*w_sf_jvt/v_sumofwgt[file_iter]*v_lumi[file_iter]*v_xs_eff[file_iter];
    cutflow("initial").pass("initial","All",wgt);
    // lepton number > 3
    if(v_l_pid.size()<=3) return false;
@@ -119,14 +119,18 @@ void ana::lepton_pt_sort()
          }  
 }
 ////////////////////////////////////////////////below is major part of ana///////////////////////////////////////////////////////////
+////////////////////////////////////////////////////constructors/////////////////////////////////////////////////////////////////////
 ana::ana(TTree* tree): ana_base(tree){}
 
+ana::ana(TTree* tree,vector<float> iv_sumofwgt,vector<float>iv_lumi,vector<float>iv_xs_eff): 
+   ana_base(tree),v_sumofwgt(iv_sumofwgt),v_lumi(iv_lumi),v_xs_eff(iv_xs_eff){}
+//////////////////////////////////////////////////////cutflow///////////////////////////////////////////////////////////////////////
 CutFlowTool& ana::cutflow(string s, bool ini)
 {
    if(ini) m_CutFlowTool.emplace(s,s);
    return m_CutFlowTool.at(s);
 }
-//changemark
+/////////////////////////////////////////////////////histogram//////////////////////////////////////////////////////////////////////
 TH1F* ana::makehist(TString s, bool ini)
 {
    if(ini) m_hist.emplace(s,new TH1F(s,s,20,0,400));
@@ -161,7 +165,7 @@ void ana::channel_fillhist(TString channel_name, int nZ)
    makehist(channel_name+"_subleading_lepton_pt")->Fill(v_l_tlv[v_l_order[1]].Pt()/1000);
 
 }
-
+/////////////////////////////////////////////////////////////////Loop///////////////////////////////////////////////////
 void ana::Loop()
 {
    if (fChain == 0) return;
@@ -174,11 +178,20 @@ void ana::Loop()
       Long64_t ientry = LoadTree(jentry);
       if (ientry < 0) break;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
       Loop_initialize();
 
       if(ientry%100000==0) std::cout<<"processing event: "<<ientry<<'\n';
 //      if(ientry>100000) break;
+      if(ientry==0)
+      { 
+         file_iter++;
+         std::cout<<"#####################begin of file##################"<<'\n';
+         std::cout<<"#sum of weight: "<<v_sumofwgt[file_iter]<<'\n';
+         std::cout<<"#luminosity: "<<v_lumi[file_iter]<<'\n';
+         std::cout<<"#cross section*efficiency: "<<v_xs_eff[file_iter]<<'\n';
+         std::cout<<"#####################end of file####################"<<'\n';
+      }
       if(initial_Cut()) 
       if(ZZZ_Cut())
       {
@@ -194,9 +207,9 @@ void ana::Loop()
       }
 
       Loop_terminate();
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
    }    
    Terminate();
+
 } 
 
 void ana::Loop_initialize()
@@ -228,6 +241,7 @@ void ana::Loop_terminate()
 void ana::Initialize()
 {
    _output= new TFile("output.root","recreate");
+   file_iter=-1;
    cutflow("initial",true)
       .regFlow("initial","initial selection")
       .regCut("All")

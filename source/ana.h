@@ -37,6 +37,7 @@ class ana:public ana_base
       void WWZ_operation();
 //Loop  functions
       ana(TTree* tree);
+      ana(TTree* tree, vector<float> iv_sumofwgt, vector<float> iv_lumi, vector<float> iv_xs_eff);
       void Loop();
       void Initialize();
       void Terminate();
@@ -55,5 +56,9 @@ class ana:public ana_base
       TFile*                       _output;
       map<TString, TH1F*>          m_hist;
       map<string,CutFlowTool>      m_CutFlowTool;
+      int                          file_iter;
+      vector<float>                v_sumofwgt;
+      vector<float>                v_lumi;
+      vector<float>                v_xs_eff;
 };
 #endif
