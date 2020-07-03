@@ -150,7 +150,7 @@ void ana::channel_makehist(TString channel_name, int nZ)
    makehist(channel_name+"_subleading_lepton_pt",true);
 }
 
-void ana::channel_fillhist(TString channel_name, int nZ)
+void ana::channel_fillhist(TString channel_name, int nZ, float fill_wgt)
 {
    if(nZ>3) return;
    TString s_number[3]={"first","second","third"};
@@ -158,11 +158,11 @@ void ana::channel_fillhist(TString channel_name, int nZ)
    for(int i=0;i<nZ;i++)
    {
       Z_tlv=v_l_tlv[v_Z_pair[i].first]+v_l_tlv[v_Z_pair[i].second];
-      makehist(channel_name+"_Z_mass_"+s_number[i])->Fill(Z_tlv.M()/1000);
-      makehist(channel_name+"_Z_pt_"+s_number[i])->Fill(Z_tlv.Pt()/1000);
+      makehist(channel_name+"_Z_mass_"+s_number[i])->Fill(Z_tlv.M()/1000,fill_wgt);
+      makehist(channel_name+"_Z_pt_"+s_number[i])->Fill(Z_tlv.Pt()/1000,fill_wgt);
    }
-   makehist(channel_name+"_leading_lepton_pt")->Fill(v_l_tlv[v_l_order[0]].Pt()/1000);
-   makehist(channel_name+"_subleading_lepton_pt")->Fill(v_l_tlv[v_l_order[1]].Pt()/1000);
+   makehist(channel_name+"_leading_lepton_pt")->Fill(v_l_tlv[v_l_order[0]].Pt()/1000,fill_wgt);
+   makehist(channel_name+"_subleading_lepton_pt")->Fill(v_l_tlv[v_l_order[1]].Pt()/1000,fill_wgt);
 
 }
 /////////////////////////////////////////////////////////////////Loop///////////////////////////////////////////////////

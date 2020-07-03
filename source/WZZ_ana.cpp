@@ -8,8 +8,7 @@ bool ana::WZZ_Cut()
    cutflow("WZZ").pass("WZZ",">=5l",wgt*v_Z_wgt[0]);
    // at least 2 SFOS pairs & calculate weight
    if(v_Z_pair.size()<2) return false;
-   float WZZ_wgt=wgt;
-   WZZ_wgt*=v_Z_wgt[0]*v_Z_wgt[1];
+   WZZ_wgt=wgt*v_Z_wgt[0]*v_Z_wgt[1];
    for(int i=0;i<nlepton;i++)
    {
       if(v_l_order[i]==v_Z_pair[0].first || v_l_order[i]==v_Z_pair[0].second || v_l_order[i]==v_Z_pair[1].first || v_l_order[i]==v_Z_pair[1].second) continue;
@@ -31,5 +30,5 @@ bool ana::WZZ_Cut()
 
 void ana::WZZ_operation()
 {
-   if(cutflow("WZZ").isPass("WZZ","B_veto60")) channel_fillhist("WZZ",2);
+   if(cutflow("WZZ").isPass("WZZ","B_veto60")) channel_fillhist("WZZ",2,WZZ_wgt);
 }

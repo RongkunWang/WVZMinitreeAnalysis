@@ -9,7 +9,7 @@ bool ana::WWZ_Cut()
    //lepton numbers
    int nlepton=v_l_pid.size();
    //define weight
-   float WWZ_wgt= wgt*v_Z_wgt[0];
+   WWZ_wgt= wgt*v_Z_wgt[0];
    int nW=0;
    for(int i=0;i<nlepton;i++)
    {
@@ -39,5 +39,5 @@ bool ana::WWZ_Cut()
 
 void ana::WWZ_operation()
 {
-   if(cutflow("WWZ").isPass("WWZ","B_veto60")) channel_fillhist("WWZ",1);
+   if(cutflow("WWZ").isPass("WWZ","B_veto60")) channel_fillhist("WWZ",1,WWZ_wgt);
 }

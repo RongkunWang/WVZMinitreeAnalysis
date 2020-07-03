@@ -17,6 +17,9 @@ class ana:public ana_base
    public:
 // variables
       float                        wgt;
+      float                        ZZZ_wgt;
+      float                        WZZ_wgt;
+      float                        WWZ_wgt;
       vector<TLorentzVector>       v_l_tlv;
       vector<int>                  v_l_pid;
       vector<float>                v_l_wgt;
@@ -47,7 +50,7 @@ class ana:public ana_base
       CutFlowTool&  cutflow(string s="NOMINAL",bool ini=false);
       TH1F*         makehist(TString s="NULL",bool ini=false);
       void          channel_makehist(TString channel_name, int nZ=0);
-      void          channel_fillhist(TString channel_name, int nZ=0);
+      void          channel_fillhist(TString channel_name, int nZ=0, float fill_wgt=1);
       void          lepton_pt_sort();
       void          Find_Z_pair();      
       void          Bjet_Cut(string s_flow, string s_cut, float wgt_base);
