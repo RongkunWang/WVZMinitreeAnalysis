@@ -1,4 +1,5 @@
 /test
 /data
 /run/output
+/plot/PDFs
 *.o

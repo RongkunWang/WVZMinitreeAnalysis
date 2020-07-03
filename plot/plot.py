@@ -16,7 +16,9 @@ color_dic["ZZZ_6l0v"]=3
 color_dic["ZZZ_4l2v"]=4
 
 
-var_name_list=["ZZZ_Z_pt_first","WWZ_leading_lepton_pt","WWZ_subleading_lepton_pt"]
+var_name_list=["ZZZ_Z_pt_first","ZZZ_Z_pt_second","ZZZ_Z_pt_third","WZZ_Z_pt_first","WZZ_Z_pt_second","WWZ_Z_pt_first",
+               "ZZZ_leading_lepton_pt","ZZZ_subleading_lepton_pt","WZZ_leading_lepton_pt","WZZ_subleading_lepton_pt","WWZ_leading_lepton_pt","WWZ_subleading_lepton_pt",
+               "ZZZ_Z_mass_first","ZZZ_Z_mass_second","ZZZ_Z_mass_third","WZZ_Z_mass_first","WZZ_Z_mass_second","WWZ_Z_mass_first" ]
 # set stack dictionary
 s_dic={}
 
@@ -29,9 +31,9 @@ for file_name in file_name_list:
 		input_hist= input_file.Get(var_name)
 
 		s_dic[var_name].SetDoShape()
-		s_dic[var_name].add(input_hist, lco=color_dic[file_name], lab_name=file_name, drawop="E", lab_op="fl",is_fill_color=True, fco=color_dic[file_name], falpha=0.1)
+		s_dic[var_name].add(input_hist, lco=color_dic[file_name], lab_name=file_name, drawop="E", lab_op="fl",is_fill_color=True,fco=color_dic[file_name], falpha=0.1)
 		
 for var_name in var_name_list:
 	s_dic[var_name].draw()
-	s_dic[var_name].Print("./PDFs/"+var_name+".pdf")
+	s_dic[var_name].Print("./PDFs/"+var_name+".png")
 

@@ -50,7 +50,7 @@ bool ana::initial_Cut()
    if(v_Z_pair.size()==0) return false;
    cutflow("initial").pass("initial","1_SFOS",wgt*v_Z_wgt[0]);
    // Z window 15 GeV
-   if(abs((v_l_tlv[v_Z_pair[0].first]+v_l_tlv[v_Z_pair[0].second]).M()-Z_mass)>15e3) return false;
+   if(abs((v_l_tlv[v_Z_pair[0].first]+v_l_tlv[v_Z_pair[0].second]).M()-Z_mass)>20e3) return false;
    cutflow("initial").pass("initial","Z_window",wgt*v_Z_wgt[0]);
    // lepton number information
    int nlepton=v_l_pid.size();

@@ -562,7 +562,7 @@ class _BasePlot:
         """
         called before draw
         """
-        if self._l_hist[0].h1.__class__.__name__ == "TH1D":
+        if "TH1" in self._l_hist[0].h1.__class__.__name__:
             self._hframe1 = self._l_hist[0].h1.Clone("hframe")
         else:
             self._hframe1 = R.TH1D("frame", "", 1, 0, 100)
