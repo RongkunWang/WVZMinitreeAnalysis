@@ -4,6 +4,8 @@
 #include <time.h>
 #include <fstream>
 #include <TLorentzVector.h>
+#include <fstream>
+#include <iostream>
 using namespace std;
 ///////////////////////////////////////////////////below is universal functions for help////////////////////////////////////////////////
 void ana::Find_Z_pair()
@@ -50,6 +52,12 @@ bool ana::initial_Cut()
    // Z window 15 GeV
    if(abs((v_l_tlv[v_Z_pair[0].first]+v_l_tlv[v_Z_pair[0].second]).M()-Z_mass)>15e3) return false;
    cutflow("initial").pass("initial","Z_window",wgt*v_Z_wgt[0]);
+   // lepton number information
+   int nlepton=v_l_pid.size();
+   if(nlepton>6) cutflow("initial").pass("initial",">6l",wgt*v_Z_wgt[0]);
+   if(nlepton==6) cutflow("initial").pass("initial","6l",wgt*v_Z_wgt[0]);
+   if(nlepton==5) cutflow("initial").pass("initial","5l",wgt*v_Z_wgt[0]);
+   if(nlepton==4) cutflow("initial").pass("initial","4l",wgt*v_Z_wgt[0]);
    return true;
 }
 
@@ -158,6 +166,7 @@ void ana::Loop()
 {
    if (fChain == 0) return;
    Initialize();
+
    Long64_t nentries = fChain->GetEntriesFast();
 
    Long64_t nbytes = 0, nb = 0;
@@ -170,11 +179,19 @@ void ana::Loop()
 
       if(ientry%100000==0) std::cout<<"processing event: "<<ientry<<'\n';
 //      if(ientry>100000) break;
-
       if(initial_Cut()) 
-      if     (ZZZ_Cut()){ZZZ_operation();}
-      else if(WZZ_Cut()){WZZ_operation();}
-      else if(WWZ_Cut()){WWZ_operation();}
+      if(ZZZ_Cut())
+      {
+         ZZZ_operation();
+      }
+      else if(WZZ_Cut())
+      {
+         WZZ_operation();
+      }
+      else if(WWZ_Cut())
+      {
+         WWZ_operation();
+      }
 
       Loop_terminate();
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -211,39 +228,45 @@ void ana::Loop_terminate()
 void ana::Initialize()
 {
    _output= new TFile("output.root","recreate");
-
    cutflow("initial",true)
       .regFlow("initial","initial selection")
       .regCut("All")
       .regCut(">3l")
       .regCut("1_SFOS")
-      .regCut("Z_window");   
-   cutflow("ZZZ",true)
-      .regFlow("ZZZ","cutflow of ZZZ channel")
-      .regCut("6l")
-      .regCut("3_SFOS");
-   cutflow("WZZ",true)
-      .regFlow("WZZ","cutflow of WZZ channel")
-      .regCut("All")
+      .regCut("Z_window")
+      .regCut(">6l","",true)
       .regCut("6l","",true)
       .regCut("5l","",true)
+      .regCut("4l","",true);   
+   cutflow("ZZZ",true)
+      .regFlow("ZZZ","cutflow of ZZZ channel")
+      .regCut("3_SFOS")
+      .regCut("ZZZ_>6l","",true)
+      .regCut("ZZZ_6l","",true);
+   cutflow("WZZ",true)
+      .regFlow("WZZ","cutflow of WZZ channel")
+      .regCut(">=5l")
       .regCut("2_SFOS")
       .regCut("Z_window")
       .regCut("B_veto60","",true)
       .regCut("B_veto70","",true)
       .regCut("B_veto77","",true)
-      .regCut("B_veto85","",true);
+      .regCut("B_veto85","",true)
+      .regCut("WZZ_>6l","",true)
+      .regCut("WZZ_6l","",true)
+      .regCut("WZZ_5l","",true);
    cutflow("WWZ",true)
       .regFlow("WWZ","cutflow of WWZ channel")
-      .regCut("All")
-      .regCut("6l","",true)
-      .regCut("5l","",true)
-      .regCut("4l","",true)
+      .regCut(">=4l")
       .regCut("Dilepton")
       .regCut("B_veto60","",true)
       .regCut("B_veto70","",true)
       .regCut("B_veto77","",true)
-      .regCut("B_veto85","",true);
+      .regCut("B_veto85","",true)
+      .regCut("WWZ_>6l","",true)
+      .regCut("WWZ_6l","",true)
+      .regCut("WWZ_5l","",true)
+      .regCut("WWZ_4l","",true);
 
    channel_makehist("ZZZ",3);
    channel_makehist("WZZ",2);
@@ -252,12 +275,12 @@ void ana::Initialize()
 
 void ana::Terminate()
 {
-   std::ofstream ofs("cutflow_info.txt",std::ofstream::out);
-   cutflow("initial").print(ofs);
-   cutflow("ZZZ").print(ofs);
-   cutflow("WZZ").print(ofs);
-   cutflow("WWZ").print(ofs);
-   ofs.close();
+   std::ofstream _ofs_cutflow("cutflow_info.txt",std::ofstream::out);   
+   cutflow("initial").print(_ofs_cutflow);
+   cutflow("ZZZ").print(_ofs_cutflow);
+   cutflow("WZZ").print(_ofs_cutflow);
+   cutflow("WWZ").print(_ofs_cutflow);
+   _ofs_cutflow.close();
    _output->Write("All");
    _output->Close();
 }
