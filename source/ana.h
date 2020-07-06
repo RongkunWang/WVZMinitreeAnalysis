@@ -24,6 +24,7 @@ class ana:public ana_base
       vector<int>                  v_l_pid;
       vector<float>                v_l_wgt;
       vector<int>                  v_l_order;
+      vector<int>                  v_j_order;
       vector<float>                v_Z_wgt; // weight for Z leptons, related to v_Z_pair
       vector<pair<int,int> >       v_Z_pair;
       vector<int>                  v_ignore;
@@ -48,10 +49,10 @@ class ana:public ana_base
       void Loop_terminate();
 //universal functions
       CutFlowTool&  cutflow(string s="NOMINAL",bool ini=false);
-      TH1F*         makehist(TString s="NULL",bool ini=false);
+      TH1F*         makehist(TString s="NULL",bool ini=false,int nbin=20,float start=0,float end=200);
       void          channel_makehist(TString channel_name, int nZ=0);
       void          channel_fillhist(TString channel_name, int nZ=0, float fill_wgt=1);
-      void          lepton_pt_sort();
+      void          pt_sort(vector<TLorentzVector> v_tlv, vector<int>& v_order);
       void          Find_Z_pair();      
       void          Bjet_Cut(string s_flow, string s_cut, float wgt_base);
 

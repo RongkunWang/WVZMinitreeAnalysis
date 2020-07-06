@@ -6,6 +6,7 @@
 #include <TLorentzVector.h>
 #include <fstream>
 #include <iostream>
+#include "TString.h"
 using namespace std;
 ///////////////////////////////////////////////////below is universal functions for help////////////////////////////////////////////////
 void ana::Find_Z_pair()
@@ -49,7 +50,14 @@ bool ana::initial_Cut()
    Find_Z_pair();
    if(v_Z_pair.size()==0) return false;
    cutflow("initial").pass("initial","1_SFOS",wgt*v_Z_wgt[0]);
-   // Z window 15 GeV
+   // fill Z_mass_first Z_mass_second Z_mass_third
+   TString s_number[3]={"first","second","third"};
+   for(int i=0;i<v_Z_pair.size();i++)
+   {
+      TLorentzVector Z_tlv=v_l_tlv[v_Z_pair[i].first]+v_l_tlv[v_Z_pair[i].second];
+      makehist("Z_mass_"+s_number[i])->Fill(Z_tlv.M(),wgt);
+   }
+   // Z window 20 GeV
    if(abs((v_l_tlv[v_Z_pair[0].first]+v_l_tlv[v_Z_pair[0].second]).M()-Z_mass)>20e3) return false;
    cutflow("initial").pass("initial","Z_window",wgt*v_Z_wgt[0]);
    // lepton number information
@@ -104,18 +112,19 @@ void ana::Bjet_Cut(string s_flow, string s_cut, float wgt_base)
    if(btag_veto) cutflow(s_flow).pass(s_cut,"B_veto85",wgt_base*btag_wgt);
 }
 
-void ana::lepton_pt_sort()
+void ana::pt_sort(vector<TLorentzVector> v_tlv,vector<int>& v_order)
 {
    int temp;
-   for(int i=0;i<v_l_pid.size();i++)
-      v_l_order.insert(v_l_order.end(),i);
-   for(int i=0;i<v_l_pid.size();i++)   
-      for(int j=i+1;j<v_l_pid.size();j++)      
-         if(v_l_tlv[v_l_order[i]].Pt()<v_l_tlv[v_l_order[j]].Pt())
+   int nparticle=v_tlv.size();
+   for(int i=0;i<nparticle;i++)
+      v_order.insert(v_order.end(),i);
+   for(int i=0;i<nparticle;i++)   
+      for(int j=i+1;j<nparticle;j++)      
+         if(v_tlv[v_order[i]].Pt()<v_tlv[v_order[j]].Pt())
          {
-            temp=v_l_order[i];
-            v_l_order[i]=v_l_order[j];
-            v_l_order[j]=temp;
+            temp=v_order[i];
+            v_order[i]=v_order[j];
+            v_order[j]=temp;
          }  
 }
 ////////////////////////////////////////////////below is major part of ana///////////////////////////////////////////////////////////
@@ -135,11 +144,12 @@ CutFlowTool& ana::cutflow(string s, bool ini)
    return m_CutFlowTool.at(s);
 }
 /////////////////////////////////////////////////////histogram//////////////////////////////////////////////////////////////////////
-TH1F* ana::makehist(TString s, bool ini)
+TH1F* ana::makehist(TString s, bool ini, int nbin, float start, float end)
 {
-   if(ini) m_hist.emplace(s,new TH1F(s,s,20,0,400));
+   if(ini) m_hist.emplace(s,new TH1F(s,s,nbin,start,end));
    return m_hist.at(s);
 }
+
 
 void ana::channel_makehist(TString channel_name, int nZ)
 {
@@ -150,8 +160,17 @@ void ana::channel_makehist(TString channel_name, int nZ)
       makehist(channel_name+"_Z_mass_"+s_number[i],true);
       makehist(channel_name+"_Z_pt_"+s_number[i],true);
    }
-   makehist(channel_name+"_leading_lepton_pt",true);
-   makehist(channel_name+"_subleading_lepton_pt",true);
+   makehist(channel_name+"_jet_number",true);
+   for(int i=0;i<7;i++)
+   {
+      makehist(channel_name+"_lepton_pt_"+TString::Format("%d",i+1),true);
+      makehist(channel_name+"_lepton_eta_"+TString::Format("%d",i+1),true,20,-5,5);
+   }
+   for(int i=0;i<10;i++)
+   {
+      makehist(channel_name+"_jet_pt_"+TString::Format("%d",i+1),true);
+      makehist(channel_name+"_jet_eta_"+TString::Format("%d",i+1),true,20,-5,5);
+   }
 }
 
 void ana::channel_fillhist(TString channel_name, int nZ, float fill_wgt)
@@ -159,15 +178,25 @@ void ana::channel_fillhist(TString channel_name, int nZ, float fill_wgt)
    if(nZ>3) return;
    TString s_number[3]={"first","second","third"};
    TLorentzVector Z_tlv;
+   int nlepton=v_l_tlv.size();
+   int njet=v_j_tlv->size();
    for(int i=0;i<nZ;i++)
    {
       Z_tlv=v_l_tlv[v_Z_pair[i].first]+v_l_tlv[v_Z_pair[i].second];
       makehist(channel_name+"_Z_mass_"+s_number[i])->Fill(Z_tlv.M()/1000,fill_wgt);
       makehist(channel_name+"_Z_pt_"+s_number[i])->Fill(Z_tlv.Pt()/1000,fill_wgt);
    }
-   makehist(channel_name+"_leading_lepton_pt")->Fill(v_l_tlv[v_l_order[0]].Pt()/1000,fill_wgt);
-   makehist(channel_name+"_subleading_lepton_pt")->Fill(v_l_tlv[v_l_order[1]].Pt()/1000,fill_wgt);
-
+   makehist(channel_name+"_jet_number")->Fill(njet,fill_wgt);
+   for(int i=0;i<nlepton && i<7;i++)
+   {
+      makehist(channel_name+"_lepton_pt_"+TString::Format("%d",i+1))->Fill(v_l_tlv[v_l_order[i]].Pt()/1000,fill_wgt);
+      makehist(channel_name+"_lepton_eta_"+TString::Format("%d",i+1))->Fill(v_l_tlv[v_l_order[i]].Eta(),fill_wgt);
+   }
+   for(int i=0;i<njet && i<10;i++)
+   {
+      makehist(channel_name+"_jet_pt_"+TString::Format("%d",i+1))->Fill((*v_j_tlv)[v_j_order[i]].Pt()/1000,fill_wgt);
+      makehist(channel_name+"_jet_eta_"+TString::Format("%d",i+1))->Fill((*v_j_tlv)[v_j_order[i]].Eta(),fill_wgt);
+   }
 }
 /////////////////////////////////////////////////////////////////Loop///////////////////////////////////////////////////
 void ana::Loop()
@@ -224,7 +253,8 @@ void ana::Loop_initialize()
    v_l_pid.insert(v_l_pid.end(), v_m_pid->begin(), v_m_pid->end());
    v_l_wgt.insert(v_l_wgt.end(), v_e_wgt->begin(), v_e_wgt->end());
    v_l_wgt.insert(v_l_wgt.end(), v_m_wgt->begin(), v_m_wgt->end());
-   lepton_pt_sort();
+   pt_sort(v_l_tlv,v_l_order);
+   pt_sort(*v_j_tlv,v_j_order);
 }
 
 void ana::Loop_terminate()
@@ -285,7 +315,9 @@ void ana::Initialize()
       .regCut("WWZ_6l","",true)
       .regCut("WWZ_5l","",true)
       .regCut("WWZ_4l","",true);
-
+   makehist("Z_mass_first",true);
+   makehist("Z_mass_second",true);
+   makehist("Z_mass_third",true);
    channel_makehist("ZZZ",3);
    channel_makehist("WZZ",2);
    channel_makehist("WWZ",1);
