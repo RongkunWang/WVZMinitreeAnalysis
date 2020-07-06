@@ -7,27 +7,41 @@ WVZ minitree analysis
 
 This code can:
  - generate cutflow
- - geenrate histograms of some variable
+ - generate histograms of some variable
 
 ----------------------------------------------------
 
-2. Code structure
+2. file structure
 
 ----------------------------------------------------
- - /source: source code, including cpp and header files
- - /build: Makefile, can generate exe
- - /run: contain 
+
+ - /source: contain source code
+ - /build: use `make` to generate executable `run`
+ - /run: contain `run`
+   - cutflow information is in `/run/cutflowinfo`, with `convert_csv.py` convertion tool
+ - /plot: contain `plot.py`, used to generate .png
+   - generated root files are in `/plot/root`
+
+
+----------------------------------------------------
+
+3. Code structure
+
+----------------------------------------------------
+ - cut: applied in `ana.cpp`, `WWZ_ana.cpp`, `WZZ_ana.cpp` and `ZZZ_ana.cpp`
+ - /build: Makefile, don't have to change except you want to add new source file
+ - `run`: 
    1. `run: main exe`
    2. `file.list: include root file names`
-   3. `output.root: include histograms`
-   4. `cutflowinfo.txt: include cutflow information`
+   3. `test.root: include histograms`
+   4. `test.txt: include cutflow information`
 ----------------------------------------------------
 
-3. How to run this code
+4. How to run this code
 
 -----------------------------------------------------
  - `cd build/`
  - `make`
  - `cd ../run`
- - `./run`
+ - `./run test`
 if you are not working in UMATLAS server, you might need to change `file.list` first!!!
