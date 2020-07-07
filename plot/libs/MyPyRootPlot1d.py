@@ -1720,10 +1720,10 @@ def testMultiPad():
 
 if __name__ == "__main__":
     import AtlasStyle
-    test_FlatPlot1()
+    #  test_FlatPlot1()
     #  test_FlatPlotRatio1()
-    #  test_StackPlotRatio1()
-    #  test_StackPlotCustomize1()
-    #  test_StackPlotFraction()
+    #test_StackPlotRatio1()
+    test_StackPlotCustomize1()
+    #test_StackPlotFraction()
     #  testPlotWithTGraph()
     #  testMultiPad()

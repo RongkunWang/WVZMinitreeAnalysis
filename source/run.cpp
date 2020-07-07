@@ -26,7 +26,7 @@ int main(int argc, char** argv)
    m_xs_eff["WZZ_5l1v"]=1.88e-4;
    m_xs_eff["ZZZ_4l2v"]=8.65e-5;
    m_xs_eff["ZZZ_6l0v"]=1.45e-5;
-   m_xs_eff["llll"]=1.25;
+   m_xs_eff["_llll"]=1.25;
    m_xs_eff["ggllll_130M4l"]=1.01e-2;
    // sumofwgt, lumi, xs_eff inputdata
    vector<float>       iv_sumofwgt;

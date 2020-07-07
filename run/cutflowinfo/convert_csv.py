@@ -29,8 +29,8 @@ def _write_csv(file_name_list,output_file_name="yield.csv",add_wgt=True):
 			f_out.write("{}".format(file_name))
 			for lst in yield_dic[file_name]:
 				f_out.write(",{}".format(lst[index]))
-		f_out.write('\n')
+			f_out.write('\n')
 
 if __name__=="__main__":
-	file_name_list=["llll","WWZ_4l2v","WZZ_5l1v","ZZZ_6l0v","ZZZ_4l2v"]
+	file_name_list=["qq4l","gg4l","WWZ_4l2v","WZZ_5l1v","ZZZ_6l0v","ZZZ_4l2v"]
 	_write_csv(file_name_list)		
