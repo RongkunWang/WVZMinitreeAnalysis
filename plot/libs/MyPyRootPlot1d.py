@@ -629,6 +629,7 @@ class _BasePlotRatio(_BasePlot):
         self._l_hist = []
         self._l_hist_ratio = []
         self._is_div_bin_width = False
+        self.remove_mc_stat = False
         pass
 
     def cd_canvas(self, ):
@@ -1720,10 +1721,10 @@ def testMultiPad():
 
 if __name__ == "__main__":
     import AtlasStyle
-    #  test_FlatPlot1()
+    test_FlatPlot1()
     #  test_FlatPlotRatio1()
-    #test_StackPlotRatio1()
+    test_StackPlotRatio1()
     test_StackPlotCustomize1()
-    #test_StackPlotFraction()
+    test_StackPlotFraction()
     #  testPlotWithTGraph()
     #  testMultiPad()
