@@ -1642,8 +1642,8 @@ def test_StackPlotCustomize1():
     fp.add_sig(ha, lab_name = "data", drawop="", lab_op = "F")
     fp.add_bkg(hb, lab_name = "b histogram", drawop="", lab_op = "F")
     fp.add_bkg(hc, lab_name = "c histogram", drawop="", lab_op = "F")
-    fp.set_frame1(RightMargin = 0.1)
-    fp.set_frame2(ylow = 0, yhigh = 3, RightMargin = 0.1)
+    fp.set_frame1(RightMargin = 0.1, ytitle="haha")
+    fp.set_frame2(ylow = 0, yhigh = 3, RightMargin = 0.1, xtitle="eta", ytitle="ha?")
     fp.draw(is_line_color = True, data_to_mc = False)
     fp.Print("test_StackPlotCustomize1.pdf")
     return fp
@@ -1723,8 +1723,8 @@ if __name__ == "__main__":
     import AtlasStyle
     test_FlatPlot1()
     #  test_FlatPlotRatio1()
-    test_StackPlotRatio1()
+    #test_StackPlotRatio1()
     test_StackPlotCustomize1()
-    test_StackPlotFraction()
+    #test_StackPlotFraction()
     #  testPlotWithTGraph()
     #  testMultiPad()

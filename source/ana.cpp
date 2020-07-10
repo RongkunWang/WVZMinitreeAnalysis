@@ -160,7 +160,7 @@ void ana::channel_makehist(TString channel_name, int nZ)
       makehist(channel_name+"_Z_mass_"+s_number[i],true);
       makehist(channel_name+"_Z_pt_"+s_number[i],true);
    }
-   makehist(channel_name+"_jet_number",true);
+   makehist(channel_name+"_jet_number",true,20,0,20);
    for(int i=0;i<7;i++)
    {
       makehist(channel_name+"_lepton_pt_"+TString::Format("%d",i+1),true);
