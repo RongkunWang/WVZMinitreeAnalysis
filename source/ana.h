@@ -16,18 +16,20 @@ class ana:public ana_base
 {
    public:
 // variables
-      float                        wgt;
-      float                        ZZZ_wgt;
-      float                        WZZ_wgt;
-      float                        WWZ_wgt;
-      vector<TLorentzVector>       v_l_tlv;
-      vector<int>                  v_l_pid;
-      vector<float>                v_l_wgt;
+      int                          m4l[4]   ;
+      float                        mass_4l  ;
+      float                        wgt      ;
+      float                        ZZZ_wgt  ;
+      float                        WZZ_wgt  ;
+      float                        WWZ_wgt  ;
+      vector<TLorentzVector>       v_l_tlv  ;
+      vector<int>                  v_l_pid  ;
+      vector<float>                v_l_wgt  ;
       vector<int>                  v_l_order;
       vector<int>                  v_j_order;
-      vector<float>                v_Z_wgt; // weight for Z leptons, related to v_Z_pair
-      vector<pair<int,int> >       v_Z_pair;
-      vector<int>                  v_ignore;
+      vector<float>                v_Z_wgt  ; // weight for Z leptons, related to v_Z_pair
+      vector<pair<int,int> >       v_Z_pair ;
+      vector<int>                  v_ignore ;
 // initial cut
       bool initial_Cut();
 // ZZZ
@@ -42,28 +44,29 @@ class ana:public ana_base
 //Loop  functions
       ana(TTree* tree);
       ana(TTree* tree, TString output_file_name, vector<float> iv_sumofwgt, vector<float> iv_lumi, vector<float> iv_xs_eff);
-      void Loop();
-      void Initialize();
-      void Terminate();
+      void Loop()           ;
+      void Initialize()     ;
+      void Terminate()      ;
       void Loop_initialize();
-      void Loop_terminate();
+      void Loop_terminate() ;
 //universal functions
-      CutFlowTool&  cutflow(string s="NOMINAL",bool ini=false);
+      CutFlowTool&  cutflow(string s="NOMINAL",bool ini=false)                                       ;
       TH1F*         makehist(TString s="NULL",bool ini=false,int nbin=20,float start=0,float end=200);
-      void          channel_makehist(TString channel_name, int nZ=0);
-      void          channel_fillhist(TString channel_name, int nZ=0, float fill_wgt=1);
-      void          pt_sort(vector<TLorentzVector> v_tlv, vector<int>& v_order);
-      void          Find_Z_pair();      
-      void          Bjet_Cut(string s_flow, string s_cut, float wgt_base);
-
+      void          channel_makehist(TString channel_name, int nZ=0)                                 ;
+      void          channel_fillhist(TString channel_name, int nZ=0, float fill_wgt=1)               ;
+      void          Find_Z_pair()                                                                    ;
+      void          Bjet_Cut(string s_flow, string s_cut, float wgt_base)                            ;
+      void          pt_sort(vector<TLorentzVector> v_tlv, vector<int>& v_order)                      ;
+      void          Find_m4l_best()                                                                  ;
+      void          Find_m4l()                                                                       ;
    private:
       TString                      _output_file_name;
-      TFile*                       _output;
-      map<TString, TH1F*>          m_hist;
-      map<string,CutFlowTool>      m_CutFlowTool;
-      int                          file_iter;
-      vector<float>                v_sumofwgt;
-      vector<float>                v_lumi;
-      vector<float>                v_xs_eff;
+      TFile*                       _output          ;
+      map<TString, TH1F*>          m_hist           ;
+      map<string,CutFlowTool>      m_CutFlowTool    ;
+      vector<float>                v_sumofwgt       ;
+      vector<float>                v_lumi           ;
+      vector<float>                v_xs_eff         ;
+
 };
 #endif

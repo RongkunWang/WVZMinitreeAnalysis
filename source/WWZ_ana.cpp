@@ -33,11 +33,16 @@ bool ana::WWZ_Cut()
    if(nlepton==6) cutflow("WWZ").pass("WWZ","WWZ_6l",WWZ_wgt);
    if(nlepton==5) cutflow("WWZ").pass("WWZ","WWZ_5l",WWZ_wgt);
    if(nlepton==4) cutflow("WWZ").pass("WWZ","WWZ_4l",WWZ_wgt);
+   Find_m4l();
    return true;
 }
 
 
 void ana::WWZ_operation()
 {
-   if(cutflow("WWZ").isPass("WWZ","B_veto60")) channel_fillhist("WWZ",1,WWZ_wgt);
+   if(cutflow("WWZ").isPass("WWZ","B_veto60"))
+   {
+      channel_fillhist("WWZ",1,WWZ_wgt);
+      makehist("m4l")->Fill(mass_4l/1000,WWZ_wgt);
+   }
 }

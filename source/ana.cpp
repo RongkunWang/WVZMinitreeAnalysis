@@ -39,7 +39,7 @@ void ana::Find_Z_pair()
 
 bool ana::initial_Cut()
 {
-   wgt= weight*w_sf_jvt/v_sumofwgt[file_iter]*v_lumi[file_iter]*v_xs_eff[file_iter];
+   wgt= weight*w_sf_jvt/v_sumofwgt[fCurrent]*v_lumi[fCurrent]*v_xs_eff[fCurrent];
    cutflow("initial").pass("initial","All",wgt);
    // lepton number > 3
    if(v_l_pid.size()<=3) return false;
@@ -126,6 +126,50 @@ void ana::pt_sort(vector<TLorentzVector> v_tlv,vector<int>& v_order)
             v_order[i]=v_order[j];
             v_order[j]=temp;
          }  
+}
+
+void ana::Find_m4l_best()
+{
+   int nlepton=v_l_pid.size();
+   int iter[4];
+   TLorentzVector m4l_tlv = v_l_tlv[v_l_order[0]];
+   for(int i=1;i<4;i++)
+      m4l_tlv += v_l_tlv[v_l_order[i]];
+   for(int i=0;i<4;i++)
+      m4l[i]=v_l_order[i];
+   for(iter[0]=0;iter[0]<nlepton;iter[0]++)
+      for(iter[1]=iter[0]+1;iter[1]<nlepton;iter[1]++)
+         for(iter[2]=iter[1]+1;iter[2]<nlepton;iter[2]++)
+            for(iter[3]=iter[2]+1;iter[3]<nlepton;iter[3]++)
+            {
+               TLorentzVector temp_tlv=v_l_tlv[iter[0]];
+               for(int i=1;i<4;i++)
+                  temp_tlv += v_l_tlv[iter[i]];
+               if(abs(temp_tlv.M()-Z_mass)<abs(m4l_tlv.M()-Z_mass))
+               {
+                  for(int i=0;i<4;i++)
+                     m4l[i]=iter[i];
+                  m4l_tlv=temp_tlv;
+               }
+            }   
+   
+}
+void ana::Find_m4l()
+{
+   m4l[0]=v_Z_pair[0].first;
+   m4l[1]=v_Z_pair[0].second;
+   int j=2;
+   for(int i=0;i<v_l_pid.size() && j<4;i++)
+   {
+      if(v_l_order[i]==m4l[0] || v_l_order[i]==m4l[1]) continue;
+      if(j==2) m4l[j]=v_l_order[i];
+      if(j==3 && (v_l_pid[v_l_order[i]]+v_l_pid[m4l[2]])==0) m4l[j]=v_l_order[i];
+      j++;
+   }
+   TLorentzVector tlv_4l;
+   for(int i=0;i<4;i++) tlv_4l+=v_l_tlv[m4l[i]];
+   mass_4l=tlv_4l.M();
+   
 }
 ////////////////////////////////////////////////below is major part of ana///////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////constructors/////////////////////////////////////////////////////////////////////
@@ -218,11 +262,10 @@ void ana::Loop()
 //      if(ientry>100000) break;
       if(ientry==0)
       { 
-         file_iter++;
          std::cout<<"#####################begin of file##################"<<'\n';
-         std::cout<<"#sum of weight: "<<v_sumofwgt[file_iter]<<'\n';
-         std::cout<<"#luminosity: "<<v_lumi[file_iter]<<'\n';
-         std::cout<<"#cross section*efficiency: "<<v_xs_eff[file_iter]<<'\n';
+         std::cout<<"#sum of weight: "<<v_sumofwgt[fCurrent]<<'\n';
+         std::cout<<"#luminosity: "<<v_lumi[fCurrent]<<'\n';
+         std::cout<<"#cross section*efficiency: "<<v_xs_eff[fCurrent]<<'\n';
          std::cout<<"#####################end of file####################"<<'\n';
       }
       if(initial_Cut()) 
@@ -275,7 +318,6 @@ void ana::Loop_terminate()
 void ana::Initialize()
 {
    _output= new TFile("../plot/root/"+_output_file_name+".root","recreate");
-   file_iter=-1;
    cutflow("initial",true)
       .regFlow("initial","initial selection")
       .regCut("All")
@@ -288,7 +330,15 @@ void ana::Initialize()
       .regCut("4l","",true);   
    cutflow("ZZZ",true)
       .regFlow("ZZZ","cutflow of ZZZ channel")
-      .regCut("3_SFOS")
+      .regCut("All")
+      .regCut("1_SFOS","",true)
+      .regCut("2_SFOS_>6l","",true)
+      .regCut("2_SFOS_=6l","",true)
+      .regCut("ee","",true)
+      .regCut("mm","",true)
+      .regCut("em","",true)
+      .regCut("3_SFOS","",true)
+      .regCut("Z3_40GeV")
       .regCut("ZZZ_>6l","",true)
       .regCut("ZZZ_6l","",true);
    cutflow("WZZ",true)
@@ -315,9 +365,11 @@ void ana::Initialize()
       .regCut("WWZ_6l","",true)
       .regCut("WWZ_5l","",true)
       .regCut("WWZ_4l","",true);
+   // make your own hist
    makehist("Z_mass_first",true);
    makehist("Z_mass_second",true);
    makehist("Z_mass_third",true);
+   makehist("m4l",true,40,0,400);
    channel_makehist("ZZZ",3);
    channel_makehist("WZZ",2);
    channel_makehist("WWZ",1);
