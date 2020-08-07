@@ -1,4 +1,6 @@
 /test
 /data
-/run/output
-*.o
+/run/cutflowinfo/*.txt
+/plot/root/
+/plot/PDFs
+/build/*.o
