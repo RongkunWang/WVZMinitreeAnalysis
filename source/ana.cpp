@@ -334,11 +334,15 @@ void ana::Initialize()
       .regCut("1_SFOS","",true)
       .regCut("2_SFOS_>6l","",true)
       .regCut("2_SFOS_=6l","",true)
-      .regCut("ee","",true)
-      .regCut("mm","",true)
-      .regCut("em","",true)
-      .regCut("3_SFOS","",true)
+      .regCut("ee_before","",true)
+      .regCut("mm_before","",true)
+      .regCut("em_before","",true)
+      .regCut("3_SFOS_before","",true)
       .regCut("Z3_40GeV")
+      .regCut("3_SFOS_after","",true)
+      .regCut("ee_after","",true)
+      .regCut("mm_after","",true)
+      .regCut("em_after","",true)
       .regCut("ZZZ_>6l","",true)
       .regCut("ZZZ_6l","",true);
    cutflow("WZZ",true)
@@ -364,7 +368,10 @@ void ana::Initialize()
       .regCut("WWZ_>6l","",true)
       .regCut("WWZ_6l","",true)
       .regCut("WWZ_5l","",true)
-      .regCut("WWZ_4l","",true);
+      .regCut("WWZ_4l","",true)
+      .regCut("WWZ_SF_noZ","",true)
+      .regCut("WWZ_SF_inZ","",true)
+      .regCut("WWZ_em","",true);
    // make your own hist
    makehist("Z_mass_first",true);
    makehist("Z_mass_second",true);

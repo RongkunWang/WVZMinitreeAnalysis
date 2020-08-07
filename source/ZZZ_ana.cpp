@@ -17,43 +17,38 @@ bool ana::ZZZ_Cut()
       cutflow("ZZZ").pass("ZZZ","1_SFOS",wgt);
       return false;
    }
-   // 2 SFOS with more than 6 leptons: not recover
-   if(nZ==2 && nlepton>6)
-   {
-      cutflow("ZZZ").pass("ZZZ","2_SFOS_>6l",wgt);
-   }
    // 2 SFOS with 6 leptons: try to recover
-   if(nZ==2 && nlepton==6) 
+   if(nZ==2) 
    {
       //ZZZ_wgt
       for(int i=0;i<nlepton;i++) ZZZ_wgt*=v_l_wgt[i];
-      // all 2 SFOS 
-      cutflow("ZZZ").pass("ZZZ","2_SFOS_=6l",ZZZ_wgt);
-      for(int i=0;i<nlepton;i++)
-      {
-         sumofpid+=v_l_pid[i];
-      }
+      for(int i=0;i<nlepton;i++) sumofpid+=v_l_pid[i];
       if(nlepton==6)
       {
-         if(sumofpid==22 || sumofpid==-22) cutflow("ZZZ").pass("ZZZ","ee",ZZZ_wgt);
-         else if(sumofpid==26 || sumofpid==-26) cutflow("ZZZ").pass("ZZZ","mm",ZZZ_wgt);
+         cutflow("ZZZ").pass("ZZZ","2_SFOS_=6l",ZZZ_wgt);
+         if(sumofpid==22 || sumofpid==-22) cutflow("ZZZ").pass("ZZZ","ee_before",ZZZ_wgt);
+         else if(sumofpid==26 || sumofpid==-26) cutflow("ZZZ").pass("ZZZ","mm_before",ZZZ_wgt);
          else if(sumofpid==2 || sumofpid==-2 || sumofpid==24 || sumofpid==-24)
          {
-            cutflow("ZZZ").pass("ZZZ","em",ZZZ_wgt);
-            return false;
+            cutflow("ZZZ").pass("ZZZ","em_before",ZZZ_wgt);
          }
       }
       if(nlepton>6)
+      {
+         cutflow("ZZZ").pass("ZZZ","2_SFOS_>6l",ZZZ_wgt);
          return false;
+      }
    }
    // 3 SFOS cut
    if(nZ==3)
    {
       for(int i=0;i<nZ;i++) ZZZ_wgt*=v_Z_wgt[i];
       // pass 3 SFOS cutflow
-      cutflow("ZZZ").pass("ZZZ","3_SFOS",ZZZ_wgt); 
+      cutflow("ZZZ").pass("ZZZ","3_SFOS_before",ZZZ_wgt); 
    }
    // Z3 mass > 40GeV
+   // nZ==2 cut
+
    if(nZ==2)
    {
       TLorentzVector Z3_tlv;
@@ -63,15 +58,27 @@ bool ana::ZZZ_Cut()
          Z3_tlv +=v_l_tlv[i];
       }
       if(Z3_tlv.M()>40e3)
+      {
          cutflow("ZZZ").pass("ZZZ","Z3_40GeV",ZZZ_wgt);
-         
+         if(sumofpid==22 || sumofpid==-22) cutflow("ZZZ").pass("ZZZ","ee_after",ZZZ_wgt);
+         else if(sumofpid==26 || sumofpid==-26) cutflow("ZZZ").pass("ZZZ","mm_after",ZZZ_wgt);
+         else if(sumofpid==2 || sumofpid==-2 || sumofpid==24 || sumofpid==-24)
+         {
+            cutflow("ZZZ").pass("ZZZ","em_after",ZZZ_wgt);
+         }
+      }   
       else
          return false;
    }
+
+   // nZ==3 cut
    if(nZ==3) 
    {
       if((v_l_tlv[v_Z_pair[2].first]+v_l_tlv[v_Z_pair[2].second]).M()>40e3)
+      {
          cutflow("ZZZ").pass("ZZZ","Z3_40GeV",ZZZ_wgt);
+         cutflow("ZZZ").pass("ZZZ","3_SFOS_after",ZZZ_wgt);
+      }
       else
          return false;
    }
@@ -83,7 +90,8 @@ bool ana::ZZZ_Cut()
 
 void ana::ZZZ_operation()
 {
-   if(cutflow("ZZZ").isPass("ZZZ","3_SFOS")) 
+//   if(cutflow("ZZZ").isPass("ZZZ","Z3_40GeV")) 
+   if(cutflow("ZZZ").isPass("ZZZ","3_SFOS_after"))
    {
       channel_fillhist("ZZZ",3,ZZZ_wgt);
    }
