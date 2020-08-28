@@ -1,6 +1,6 @@
 /test
 /data
 /run/cutflowinfo/*.txt
-/plot/root/
-/plot/PDFs
+/plot/root/*.root
+/plot/PDFs/*.png
 /build/*.o
