@@ -39,7 +39,7 @@ void ana::Find_Z_pair()
 
 bool ana::initial_Cut()
 {
-   wgt= weight*w_sf_jvt/v_sumofwgt[fCurrent]*v_lumi[fCurrent]*v_xs_eff[fCurrent];
+   wgt= weight/v_sumofwgt[fCurrent];
    cutflow("initial").pass("initial","All",wgt);
    // lepton number > 3
    if(v_l_pid.size()<=3) return false;
@@ -60,6 +60,20 @@ bool ana::initial_Cut()
    // Z window 20 GeV
    if(abs((v_l_tlv[v_Z_pair[0].first]+v_l_tlv[v_Z_pair[0].second]).M()-Z_mass)>20e3) return false;
    cutflow("initial").pass("initial","Z_window",wgt*v_Z_wgt[0]);
+   // forward electron
+   bool e_fwd=false;
+   for(int i=0;i<v_e_fwd->size();i++)
+   {
+      if((*v_e_fwd)[i]){ e_fwd=true; break;} 
+   }
+   if(e_fwd) cutflow("initial").pass("initial","e_fwd",wgt*v_Z_wgt[0]);
+   // low pt muon
+   bool m_lowpt=false;
+   for(int i=0;i<v_m_lowpt->size();i++)
+   {
+      if((*v_m_lowpt)[i]){ m_lowpt=true; break;}
+   }
+   if(m_lowpt) cutflow("initial").pass("initial","m_lowpt",wgt*v_Z_wgt[0]);
    // lepton number information
    int nlepton=v_l_pid.size();
    if(nlepton>6) cutflow("initial").pass("initial",">6l",wgt*v_Z_wgt[0]);
@@ -324,6 +338,8 @@ void ana::Initialize()
       .regCut(">3l")
       .regCut("1_SFOS")
       .regCut("Z_window")
+      .regCut("e_fwd","",true)
+      .regCut("m_lowpt","",true)
       .regCut(">6l","",true)
       .regCut("6l","",true)
       .regCut("5l","",true)
