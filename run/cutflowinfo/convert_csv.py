@@ -33,4 +33,5 @@ def _write_csv(file_name_list,output_file_name="yield.csv",add_wgt=True):
 
 if __name__=="__main__":
 	file_name_list=["qq4l","gg4l","WWZ_4l2v","WZZ_5l1v","ZZZ_6l0v","ZZZ_4l2v"]
-	_write_csv(file_name_list)		
+        file_name_list_old=["qq4l_old","gg4l_old","WWZ_4l2v_old","WZZ_5l1v_old","ZZZ_6l0v_old","ZZZ_4l2v_old"]
+	_write_csv(file_name_list_old)		

@@ -57,6 +57,7 @@ bool ana::initial_Cut()
       TLorentzVector Z_tlv=v_l_tlv[v_Z_pair[i].first]+v_l_tlv[v_Z_pair[i].second];
       makehist("Z_mass_"+s_number[i])->Fill(Z_tlv.M(),wgt);
    }
+
    // Z window 20 GeV
    if(abs((v_l_tlv[v_Z_pair[0].first]+v_l_tlv[v_Z_pair[0].second]).M()-Z_mass)>20e3) return false;
    cutflow("initial").pass("initial","Z_window",wgt*v_Z_wgt[0]);
@@ -74,6 +75,12 @@ bool ana::initial_Cut()
       if((*v_m_lowpt)[i]){ m_lowpt=true; break;}
    }
    if(m_lowpt) cutflow("initial").pass("initial","m_lowpt",wgt*v_Z_wgt[0]);
+
+   // Z window 20 GeV
+/*   if(e_fwd || m_lowpt) return false;
+   if(abs((v_l_tlv[v_Z_pair[0].first]+v_l_tlv[v_Z_pair[0].second]).M()-Z_mass)>20e3) return false;
+   cutflow("initial").pass("initial","Z_window",wgt*v_Z_wgt[0]);
+*/
    // lepton number information
    int nlepton=v_l_pid.size();
    if(nlepton>6) cutflow("initial").pass("initial",">6l",wgt*v_Z_wgt[0]);
