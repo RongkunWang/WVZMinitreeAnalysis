@@ -32,6 +32,5 @@ def _write_csv(file_name_list,output_file_name="yield.csv",add_wgt=True):
 			f_out.write('\n')
 
 if __name__=="__main__":
-	file_name_list=["qq4l","gg4l","WWZ_4l2v","WZZ_5l1v","ZZZ_6l0v","ZZZ_4l2v"]
-        file_name_list_old=["qq4l_old","gg4l_old","WWZ_4l2v_old","WZZ_5l1v_old","ZZZ_6l0v_old","ZZZ_4l2v_old"]
-	_write_csv(file_name_list_old)		
+	file_name_list=["llll","ggllll_130M4l","WWZ_4l2v","WZZ_5l1v","ZZZ_6l0v","ZZZ_4l2v","ZqqZll","WqqZll","WWZ_3l1v2j","WZZ_4l2j","WZZ_3l1v2j","WWW_3l3v","WWZ_2l4v","WZZ_3l3v","ZZZ_2l4v","lllv","llvv","lllljj","lllvjj","llvvjj","llll_lowMllPt","lllv_lowMllPt","llvv_lowMllPt"]
+	_write_csv(file_name_list)		

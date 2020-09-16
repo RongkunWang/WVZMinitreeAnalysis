@@ -16,6 +16,8 @@ class ana:public ana_base
 {
    public:
 // variables
+      int                          n_e_fwd  ;
+      int                          n_m_lowpt;
       int                          m4l[4]   ;
       float                        mass_4l  ;
       float                        wgt      ;
@@ -43,7 +45,7 @@ class ana:public ana_base
       void WWZ_operation();
 //Loop  functions
       ana(TTree* tree);
-      ana(TTree* tree, TString output_file_name, vector<float> iv_sumofwgt, vector<float> iv_lumi, vector<float> iv_xs_eff);
+      ana(TTree* tree, TString output_file_name, vector<float> iv_sumofwgt);
       void Loop()           ;
       void Initialize()     ;
       void Terminate()      ;
@@ -65,8 +67,6 @@ class ana:public ana_base
       map<TString, TH1F*>          m_hist           ;
       map<string,CutFlowTool>      m_CutFlowTool    ;
       vector<float>                v_sumofwgt       ;
-      vector<float>                v_lumi           ;
-      vector<float>                v_xs_eff         ;
 
 };
 #endif

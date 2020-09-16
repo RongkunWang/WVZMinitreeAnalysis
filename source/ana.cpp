@@ -61,26 +61,24 @@ bool ana::initial_Cut()
    // Z window 20 GeV
    if(abs((v_l_tlv[v_Z_pair[0].first]+v_l_tlv[v_Z_pair[0].second]).M()-Z_mass)>20e3) return false;
    cutflow("initial").pass("initial","Z_window",wgt*v_Z_wgt[0]);
+   if(passTrig) cutflow("initial").pass("initial","passTrig",wgt*v_Z_wgt[0]);
    // forward electron
-   bool e_fwd=false;
+   n_e_fwd=0;
    for(int i=0;i<v_e_fwd->size();i++)
    {
-      if((*v_e_fwd)[i]){ e_fwd=true; break;} 
+      if((*v_e_fwd)[i]){n_e_fwd++;} 
    }
-   if(e_fwd) cutflow("initial").pass("initial","e_fwd",wgt*v_Z_wgt[0]);
+   if(n_e_fwd>0) cutflow("initial").pass("initial","e_fwd",wgt*v_Z_wgt[0]);
+   if(n_e_fwd==1) cutflow("initial").pass("initial","e_fwd_1",wgt*v_Z_wgt[0]);
    // low pt muon
-   bool m_lowpt=false;
+   n_m_lowpt=0;
    for(int i=0;i<v_m_lowpt->size();i++)
    {
-      if((*v_m_lowpt)[i]){ m_lowpt=true; break;}
+      if((*v_m_lowpt)[i]){ n_m_lowpt++;}
    }
-   if(m_lowpt) cutflow("initial").pass("initial","m_lowpt",wgt*v_Z_wgt[0]);
-
-   // Z window 20 GeV
-/*   if(e_fwd || m_lowpt) return false;
-   if(abs((v_l_tlv[v_Z_pair[0].first]+v_l_tlv[v_Z_pair[0].second]).M()-Z_mass)>20e3) return false;
-   cutflow("initial").pass("initial","Z_window",wgt*v_Z_wgt[0]);
-*/
+   if(n_m_lowpt>0) cutflow("initial").pass("initial","m_lowpt",wgt*v_Z_wgt[0]);
+   if(n_m_lowpt==1) cutflow("initial").pass("initial","m_lowpt_1",wgt*v_Z_wgt[0]);
+   if(n_e_fwd==0 && n_m_lowpt==0) cutflow("initial").pass("initial","no_fwde_lowptm",wgt*v_Z_wgt[0]);
    // lepton number information
    int nlepton=v_l_pid.size();
    if(nlepton>6) cutflow("initial").pass("initial",">6l",wgt*v_Z_wgt[0]);
@@ -196,12 +194,10 @@ void ana::Find_m4l()
 ////////////////////////////////////////////////////constructors/////////////////////////////////////////////////////////////////////
 ana::ana(TTree* tree): ana_base(tree){}
 
-ana::ana(TTree* tree, TString output_file_name, vector<float> iv_sumofwgt, vector<float>iv_lumi, vector<float>iv_xs_eff): 
+ana::ana(TTree* tree, TString output_file_name, vector<float> iv_sumofwgt): 
    ana_base(tree),
    _output_file_name(output_file_name),
-   v_sumofwgt(iv_sumofwgt),
-   v_lumi(iv_lumi),
-   v_xs_eff(iv_xs_eff){}
+   v_sumofwgt(iv_sumofwgt){}
 //////////////////////////////////////////////////////cutflow///////////////////////////////////////////////////////////////////////
 CutFlowTool& ana::cutflow(string s, bool ini)
 {
@@ -285,11 +281,9 @@ void ana::Loop()
       { 
          std::cout<<"#####################begin of file##################"<<'\n';
          std::cout<<"#sum of weight: "<<v_sumofwgt[fCurrent]<<'\n';
-         std::cout<<"#luminosity: "<<v_lumi[fCurrent]<<'\n';
-         std::cout<<"#cross section*efficiency: "<<v_xs_eff[fCurrent]<<'\n';
          std::cout<<"#####################end of file####################"<<'\n';
       }
-      if(initial_Cut()) 
+      if(initial_Cut()){ 
       if(ZZZ_Cut())
       {
          ZZZ_operation();
@@ -302,7 +296,7 @@ void ana::Loop()
       {
          WWZ_operation();
       }
-
+      }
       Loop_terminate();
    }    
    Terminate();
@@ -345,8 +339,12 @@ void ana::Initialize()
       .regCut(">3l")
       .regCut("1_SFOS")
       .regCut("Z_window")
+      .regCut("passTrig","",true)
+      .regCut("no_fwde_lowptm","",true)
       .regCut("e_fwd","",true)
+      .regCut("e_fwd_1","",true)
       .regCut("m_lowpt","",true)
+      .regCut("m_lowpt_1","",true)
       .regCut(">6l","",true)
       .regCut("6l","",true)
       .regCut("5l","",true)
@@ -363,6 +361,12 @@ void ana::Initialize()
       .regCut("3_SFOS_before","",true)
       .regCut("Z3_40GeV")
       .regCut("3_SFOS_after","",true)
+      .regCut("passTrig","",true)
+      .regCut("no_fwde_lowptm","",true)
+      .regCut("e_fwd","",true)
+      .regCut("e_fwd_1","",true)
+      .regCut("m_lowpt","",true)
+      .regCut("m_lowpt_1","",true)
       .regCut("ee_after","",true)
       .regCut("mm_after","",true)
       .regCut("em_after","",true)
@@ -377,6 +381,12 @@ void ana::Initialize()
       .regCut("B_veto70","",true)
       .regCut("B_veto77","",true)
       .regCut("B_veto85","",true)
+      .regCut("passTrig","",true)
+      .regCut("no_fwde_lowptm","",true)
+      .regCut("e_fwd","",true)
+      .regCut("e_fwd_1","",true)
+      .regCut("m_lowpt","",true)
+      .regCut("m_lowpt_1","",true)
       .regCut("WZZ_>6l","",true)
       .regCut("WZZ_6l","",true)
       .regCut("WZZ_5l","",true);
@@ -388,6 +398,12 @@ void ana::Initialize()
       .regCut("B_veto70","",true)
       .regCut("B_veto77","",true)
       .regCut("B_veto85","",true)
+      .regCut("passTrig","",true)
+      .regCut("no_fwde_lowptm","",true)
+      .regCut("e_fwd","",true)
+      .regCut("e_fwd_1","",true)
+      .regCut("m_lowpt","",true)
+      .regCut("m_lowpt_1","",true)
       .regCut("WWZ_>6l","",true)
       .regCut("WWZ_6l","",true)
       .regCut("WWZ_5l","",true)

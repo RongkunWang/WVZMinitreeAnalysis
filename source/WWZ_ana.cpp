@@ -30,14 +30,22 @@ bool ana::WWZ_Cut()
    cutflow("WWZ").pass("WWZ","Dilepton",WWZ_wgt);
    //bveto
    Bjet_Cut("WWZ","WWZ",WWZ_wgt);
+   if(cutflow("WWZ").isPass("WWZ","B_beto77"))
+   {
+      if(n_e_fwd>0) cutflow("WWZ").pass("WWZ","e_fwd",WWZ_wgt);
+      if(n_e_fwd==1) cutflow("WWZ").pass("WWZ","e_fwd_1",WWZ_wgt);
+      if(n_m_lowpt>0) cutflow("WWZ").pass("WWZ","m_lowpt",WWZ_wgt);
+      if(n_m_lowpt==1) cutflow("WWZ").pass("WWZ","m_lowpt_1",WWZ_wgt);
+      if(n_e_fwd==0 && n_m_lowpt==0) cutflow("WWZ").pass("WWZ","no_fwde_lowptm",WWZ_wgt);
+      if(passTrig) cutflow("WWZ").pass("WWZ","passTrig",WWZ_wgt);
+   }
    //lepton number infomation
    if(nlepton>6) cutflow("WWZ").pass("WWZ","WWZ_>6l",WWZ_wgt);
    if(nlepton==6) cutflow("WWZ").pass("WWZ","WWZ_6l",WWZ_wgt);
    if(nlepton==5) cutflow("WWZ").pass("WWZ","WWZ_5l",WWZ_wgt);
    if(nlepton==4) cutflow("WWZ").pass("WWZ","WWZ_4l",WWZ_wgt);
    Find_m4l();
-
-   if(cutflow("WWZ").isPass("WWZ","B_veto60"))
+   if(cutflow("WWZ").isPass("WWZ","B_veto77"))
    {
 
       // SF_noZ and SF_inZ
@@ -63,7 +71,7 @@ bool ana::WWZ_Cut()
 
 void ana::WWZ_operation()
 {
-   if(cutflow("WWZ").isPass("WWZ","B_veto60"))
+   if(cutflow("WWZ").isPass("WWZ","B_veto77"))
    {
       channel_fillhist("WWZ",1,WWZ_wgt);
       makehist("m4l")->Fill(mass_4l/1000,WWZ_wgt);

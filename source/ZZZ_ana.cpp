@@ -78,6 +78,12 @@ bool ana::ZZZ_Cut()
       {
          cutflow("ZZZ").pass("ZZZ","Z3_40GeV",ZZZ_wgt);
          cutflow("ZZZ").pass("ZZZ","3_SFOS_after",ZZZ_wgt);
+         if(n_e_fwd>0) cutflow("ZZZ").pass("ZZZ","e_fwd",ZZZ_wgt);
+         if(n_e_fwd==1) cutflow("ZZZ").pass("ZZZ","e_fwd_1",ZZZ_wgt);
+         if(n_m_lowpt>0) cutflow("ZZZ").pass("ZZZ","m_lowpt",ZZZ_wgt);
+         if(n_m_lowpt==1) cutflow("ZZZ").pass("ZZZ","m_lowpt_1",ZZZ_wgt);
+         if(n_e_fwd==0 && n_m_lowpt==0) cutflow("ZZZ").pass("ZZZ","no_fwde_lowptm",ZZZ_wgt);
+         if(passTrig) cutflow("ZZZ").pass("ZZZ","passTrig",ZZZ_wgt);
       }
       else
          return false;
