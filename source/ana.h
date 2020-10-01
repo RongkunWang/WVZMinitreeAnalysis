@@ -19,6 +19,8 @@ class ana:public ana_base
       int                          n_e_fwd  ;
       int                          n_m_lowpt;
       int                          m4l[4]   ;
+      int                          n_channel;
+      int                          n_recover;
       float                        mass_4l  ;
       float                        wgt      ;
       float                        ZZZ_wgt  ;
@@ -56,6 +58,8 @@ class ana:public ana_base
       TH1F*         makehist(TString s="NULL",bool ini=false,int nbin=20,float start=0,float end=200);
       void          channel_makehist(TString channel_name, int nZ=0)                                 ;
       void          channel_fillhist(TString channel_name, int nZ=0, float fill_wgt=1)               ;
+      void          WWZ_makehist()                                                                   ;
+      void          WWZ_fillhist(float fill_wgt, int n_WWZ_channel, int n_recover_channel)           ;
       void          Find_Z_pair()                                                                    ;
       void          Bjet_Cut(string s_flow, string s_cut, float wgt_base)                            ;
       void          pt_sort(vector<TLorentzVector> v_tlv, vector<int>& v_order)                      ;

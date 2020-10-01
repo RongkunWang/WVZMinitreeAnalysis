@@ -234,6 +234,23 @@ void ana::channel_makehist(TString channel_name, int nZ)
    }
 }
 
+void ana::WWZ_makehist()
+{
+   TString WWZ_channel[3]={"WWZ_SF_inZ","WWZ_SF_noZ","WWZ_em"};
+   TString recover_channel[3]={"base","fwde","lowptm"};
+   for(int i=0; i<3; i++)
+   {
+      for(int j=0; j<3; j++)
+      {
+         for(int k=0; k<7; k++)
+         {
+            makehist(WWZ_channel[i]+"_"+recover_channel[j]+"_lepton_pt"+TString::Format("%d",k+1),true);
+            makehist(WWZ_channel[i]+"_"+recover_channel[j]+"_lepton_eta"+TString::Format("%d",k+1),true,20,-5,5);
+         }
+      }
+   }
+}
+
 void ana::channel_fillhist(TString channel_name, int nZ, float fill_wgt)
 {
    if(nZ>3) return;
@@ -258,6 +275,21 @@ void ana::channel_fillhist(TString channel_name, int nZ, float fill_wgt)
       makehist(channel_name+"_jet_pt_"+TString::Format("%d",i+1))->Fill((*v_j_tlv)[v_j_order[i]].Pt()/1000,fill_wgt);
       makehist(channel_name+"_jet_eta_"+TString::Format("%d",i+1))->Fill((*v_j_tlv)[v_j_order[i]].Eta(),fill_wgt);
    }
+}
+
+void ana::WWZ_fillhist(float fill_wgt, int n_WWZ_channel, int n_recover_channel)
+{
+   TString WWZ_channel[3]={"WWZ_SF_inZ","WWZ_SF_noZ","WWZ_em"};
+   TString recover_channel[3]={"base","fwde","lowptm"};
+   int i= n_WWZ_channel;
+   int j= n_recover_channel;
+   int nlepton=v_l_tlv.size();
+   for(int k=0; k<7 && k< nlepton; k++)
+   {
+      makehist(WWZ_channel[i]+"_"+recover_channel[j]+"_lepton_pt"+TString::Format("%d",k+1))->Fill(v_l_tlv[v_l_order[k]].Pt()/1000,fill_wgt);
+      makehist(WWZ_channel[i]+"_"+recover_channel[j]+"_lepton_eta"+TString::Format("%d",k+1))->Fill(v_l_tlv[v_l_order[k]].Eta(),fill_wgt);    
+   }
+   
 }
 /////////////////////////////////////////////////////////////////Loop///////////////////////////////////////////////////
 void ana::Loop()
@@ -409,8 +441,17 @@ void ana::Initialize()
       .regCut("WWZ_5l","",true)
       .regCut("WWZ_4l","",true)
       .regCut("WWZ_SF_noZ","",true)
+      .regCut("WWZ_SF_noZ_base","",true)
+      .regCut("WWZ_SF_noZ_fwde","",true)
+      .regCut("WWZ_SF_noZ_lowptm","",true)
       .regCut("WWZ_SF_inZ","",true)
-      .regCut("WWZ_em","",true);
+      .regCut("WWZ_SF_inZ_base","",true)
+      .regCut("WWZ_SF_inZ_fwde","",true)
+      .regCut("WWZ_SF_inZ_lowptm","",true)
+      .regCut("WWZ_em","",true)
+      .regCut("WWZ_em_base","",true)
+      .regCut("WWZ_em_fwde","",true)
+      .regCut("WWZ_em_lowptm","",true);
    // make your own hist
    makehist("Z_mass_first",true);
    makehist("Z_mass_second",true);
@@ -419,6 +460,7 @@ void ana::Initialize()
    channel_makehist("ZZZ",3);
    channel_makehist("WZZ",2);
    channel_makehist("WWZ",1);
+   WWZ_makehist();
 }
 
 void ana::Terminate()

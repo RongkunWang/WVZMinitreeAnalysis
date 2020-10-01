@@ -47,22 +47,73 @@ bool ana::WWZ_Cut()
    Find_m4l();
    if(cutflow("WWZ").isPass("WWZ","B_veto77"))
    {
-
       // SF_noZ and SF_inZ
       if( abs(v_l_pid[W_id[0]])==abs(v_l_pid[W_id[1]]))
       {
 
          if(abs((v_l_tlv[W_id[0]]+v_l_tlv[W_id[1]]).M()-Z_mass)<10e3)
+         {
+            n_channel=0;
             cutflow("WWZ").pass("WWZ","WWZ_SF_inZ",WWZ_wgt);
+            if(n_e_fwd==0 && n_m_lowpt==0)
+            { 
+               n_recover=0;
+               cutflow("WWZ").pass("WWZ","WWZ_SF_inZ_base",WWZ_wgt);
+            }
+            if(n_e_fwd>0) 
+            {
+               n_recover=1;
+               cutflow("WWZ").pass("WWZ","WWZ_SF_inZ_fwde",WWZ_wgt);
+            }
+            if(n_m_lowpt>0) 
+            {
+               n_recover=2;
+               cutflow("WWZ").pass("WWZ","WWZ_SF_inZ_lowptm",WWZ_wgt);
+            }
+         }
          else
+         {
+            n_channel=1;
             cutflow("WWZ").pass("WWZ","WWZ_SF_noZ",WWZ_wgt);
-
+            if(n_e_fwd==0 && n_m_lowpt==0) 
+            {
+               n_recover=0;
+               cutflow("WWZ").pass("WWZ","WWZ_SF_noZ_base",WWZ_wgt);
+            }
+            if(n_e_fwd>0) 
+            {
+               n_recover=1;
+               cutflow("WWZ").pass("WWZ","WWZ_SF_noZ_fwde",WWZ_wgt);
+            }
+            if(n_m_lowpt>0) 
+            {
+               n_recover=2;
+               cutflow("WWZ").pass("WWZ","WWZ_SF_noZ_lowptm",WWZ_wgt);
+            }
+         }
       }
       //em
 
       else
+      {
+         n_channel=2;
          cutflow("WWZ").pass("WWZ","WWZ_em",WWZ_wgt);
-
+         if(n_e_fwd==0 && n_m_lowpt==0) 
+         {
+            n_recover=0;
+            cutflow("WWZ").pass("WWZ","WWZ_em_base",WWZ_wgt);
+         }
+         if(n_e_fwd>0) 
+         {
+            n_recover=1;
+            cutflow("WWZ").pass("WWZ","WWZ_em_fwde",WWZ_wgt);
+         }
+         if(n_m_lowpt>0) 
+         {
+            n_recover=2;
+            cutflow("WWZ").pass("WWZ","WWZ_em_lowptm",WWZ_wgt);
+         }
+      }
    }
 
    return true;
@@ -74,6 +125,7 @@ void ana::WWZ_operation()
    if(cutflow("WWZ").isPass("WWZ","B_veto77"))
    {
       channel_fillhist("WWZ",1,WWZ_wgt);
+      WWZ_fillhist(WWZ_wgt,n_channel,n_recover);
       makehist("m4l")->Fill(mass_4l/1000,WWZ_wgt);
    }
 }
