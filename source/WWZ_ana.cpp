@@ -44,7 +44,7 @@ bool ana::WWZ_Cut()
    if(nlepton==6) cutflow("WWZ").pass("WWZ","WWZ_6l",WWZ_wgt);
    if(nlepton==5) cutflow("WWZ").pass("WWZ","WWZ_5l",WWZ_wgt);
    if(nlepton==4) cutflow("WWZ").pass("WWZ","WWZ_4l",WWZ_wgt);
-   Find_m4l();
+   if(nlepton>=4) Find_m4l();
    if(cutflow("WWZ").isPass("WWZ","B_veto77"))
    {
       // SF_noZ and SF_inZ
@@ -126,6 +126,6 @@ void ana::WWZ_operation()
    {
       channel_fillhist("WWZ",1,WWZ_wgt);
       WWZ_fillhist(WWZ_wgt,n_channel,n_recover);
-      makehist("m4l")->Fill(mass_4l/1000,WWZ_wgt);
+      if(v_l_tlv.size()>=4) makehist("m4l")->Fill(mass_4l/1000,WWZ_wgt);
    }
 }
