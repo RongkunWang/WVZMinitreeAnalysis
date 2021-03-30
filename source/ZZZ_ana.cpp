@@ -76,8 +76,8 @@ bool ana::ZZZ_Cut()
    {
       if((v_l_tlv[v_Z_pair[2].first]+v_l_tlv[v_Z_pair[2].second]).M()>40e3)
       {
-         cutflow("ZZZ").pass("ZZZ","Z3_40GeV",ZZZ_wgt);
-         cutflow("ZZZ").pass("ZZZ","3_SFOS_after",ZZZ_wgt);
+         cutflow("ZZZ").pass("ZZZ", "Z3_40GeV",ZZZ_wgt);
+         cutflow("ZZZ").pass("ZZZ", "3_SFOS_after",ZZZ_wgt);
          if(n_e_fwd>0) cutflow("ZZZ").pass("ZZZ","e_fwd",ZZZ_wgt);
          if(n_e_fwd==1) cutflow("ZZZ").pass("ZZZ","e_fwd_1",ZZZ_wgt);
          if(n_m_lowpt>0) cutflow("ZZZ").pass("ZZZ","m_lowpt",ZZZ_wgt);
@@ -96,9 +96,8 @@ bool ana::ZZZ_Cut()
 
 void ana::ZZZ_operation()
 {
-//   if(cutflow("ZZZ").isPass("ZZZ","Z3_40GeV")) 
-   if(cutflow("ZZZ").isPass("ZZZ","3_SFOS_after"))
-   {
-      channel_fillhist("ZZZ",3,ZZZ_wgt);
-   }
+  if(cutflow("ZZZ").isPass("ZZZ","3_SFOS_after"))
+  {
+     channel_fillhist("ZZZ",3,ZZZ_wgt);
+  }
 }
