@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Thu Aug 27 22:17:58 2020 by ROOT version 6.18/04
+// Mon Oct 12 05:54:51 2020 by ROOT version 6.20/06
 // from TTree tree_NOMINAL/output tree
-// found on file: mc16_13TeV.364243.Sherpa_222_NNPDF30NNLO_WWZ_4l2v_EW6.deriv.DAOD_STDM3.e5887_s3126_r9364_p4097.root
+// found on file: mc16_13TeV.364243.Sherpa_222_NNPDF30NNLO_WWZ_4l2v_EW6.deriv.DAOD_STDM3.e5887_s3126_r10201_p4097.root
 //////////////////////////////////////////////////////////
 
 #ifndef ana_base_h
@@ -38,17 +38,28 @@ public :
    vector<bool>    *v_e_LHTight;
    vector<bool>    *v_e_ambiguous;
    vector<bool>    *v_e_fwd;
-   vector<float>   *v_e_wgt;
+   vector<float>   *v_e_passIso;
+   vector<float>   *v_e_wgtLoose;
+   vector<float>   *v_e_wgtTight;
+   vector<float>   *v_e_wgtIso;
    vector<TLorentzVector> *v_m_tlv;
    vector<int>     *v_m_pid;
-   vector<float>   *v_m_wgt;
    vector<float>   *v_m_d0;
    vector<bool>    *v_m_lowpt;
+   vector<bool>    *v_m_passIso;
+   vector<bool>    *v_m_passIsoVarRad;
+   vector<float>   *v_m_wgtLoose;
+   vector<float>   *v_m_wgtIso;
+   vector<float>   *v_m_wgtIsoVarRad;
    vector<TLorentzVector> *v_m_tlv_fsr;
    vector<int>     *v_m_pid_fsr;
-   vector<float>   *v_m_wgt_fsr;
    vector<float>   *v_m_d0_fsr;
    vector<bool>    *v_m_lowpt_fsr;
+   vector<bool>    *v_m_passIso_fsr;
+   vector<bool>    *v_m_passIsoVarRad_fsr;
+   vector<float>   *v_m_wgtLoose_fsr;
+   vector<float>   *v_m_wgtIso_fsr;
+   vector<float>   *v_m_wgtIsoVarRad_fsr;
    Double_t        MET;
    Double_t        METSig;
    vector<TLorentzVector> *v_j_tlv;
@@ -62,6 +73,21 @@ public :
    vector<float>   *v_j_wgt_btag85;
    vector<int>     *v_j_btagCont;
    vector<float>   *v_j_wgt_btagCont;
+   vector<float>   *v_e_ptvarcone30_TightTTVA_pt1000;
+   vector<float>   *v_m_ptvarcone30_TightTTVA_pt1000;
+   vector<float>   *v_m_ptvarcone30_TightTTVA_pt1000_fsr;
+   vector<float>   *v_e_ptvarcone30_TightTTVA_pt500;
+   vector<float>   *v_m_ptvarcone30_TightTTVA_pt500;
+   vector<float>   *v_m_ptvarcone30_TightTTVA_pt500_fsr;
+   vector<float>   *v_e_ptcone20_TightTTVA_pt1000;
+   vector<float>   *v_m_ptcone20_TightTTVA_pt1000;
+   vector<float>   *v_m_ptcone20_TightTTVA_pt1000_fsr;
+   vector<float>   *v_e_ptcone20_TightTTVA_pt500;
+   vector<float>   *v_m_ptcone20_TightTTVA_pt500;
+   vector<float>   *v_m_ptcone20_TightTTVA_pt500_fsr;
+   vector<float>   *v_e_neflowisol20;
+   vector<float>   *v_m_neflowisol20;
+   vector<float>   *v_m_neflowisol20_fsr;
    vector<TLorentzVector> *v_truth_l_tlv;
    vector<int>     *v_truth_l_pdgId;
    vector<bool>    *v_truth_l_fromTau;
@@ -81,17 +107,28 @@ public :
    TBranch        *b_v_e_LHTight;   //!
    TBranch        *b_v_e_ambiguous;   //!
    TBranch        *b_v_e_fwd;   //!
-   TBranch        *b_v_e_wgt;   //!
+   TBranch        *b_v_e_passIso;   //!
+   TBranch        *b_v_e_wgtLoose;   //!
+   TBranch        *b_v_e_wgtTight;   //!
+   TBranch        *b_v_e_wgtIso;   //!
    TBranch        *b_v_m_tlv;   //!
    TBranch        *b_v_m_pid;   //!
-   TBranch        *b_v_m_wgt;   //!
    TBranch        *b_v_m_d0;   //!
    TBranch        *b_v_m_lowpt;   //!
+   TBranch        *b_v_m_passIso;   //!
+   TBranch        *b_v_m_passIsoVarRad;   //!
+   TBranch        *b_v_m_wgtLoose;   //!
+   TBranch        *b_v_m_wgtIso;   //!
+   TBranch        *b_v_m_wgtIsoVarRad;   //!
    TBranch        *b_v_m_tlv_fsr;   //!
    TBranch        *b_v_m_pid_fsr;   //!
-   TBranch        *b_v_m_wgt_fsr;   //!
    TBranch        *b_v_m_d0_fsr;   //!
    TBranch        *b_v_m_lowpt_fsr;   //!
+   TBranch        *b_v_m_passIso_fsr;   //!
+   TBranch        *b_v_m_passIsoVarRad_fsr;   //!
+   TBranch        *b_v_m_wgtLoose_fsr;   //!
+   TBranch        *b_v_m_wgtIso_fsr;   //!
+   TBranch        *b_v_m_wgtIsoVarRad_fsr;   //!
    TBranch        *b_MET;   //!
    TBranch        *b_METSig;   //!
    TBranch        *b_v_j_tlv;   //!
@@ -105,6 +142,21 @@ public :
    TBranch        *b_v_j_wgt_btag85;   //!
    TBranch        *b_v_j_btagCont;   //!
    TBranch        *b_v_j_wgt_btagCont;   //!
+   TBranch        *b_v_e_ptvarcone30_TightTTVA_pt1000;   //!
+   TBranch        *b_v_m_ptvarcone30_TightTTVA_pt1000;   //!
+   TBranch        *b_v_m_ptvarcone30_TightTTVA_pt1000_fsr;   //!
+   TBranch        *b_v_e_ptvarcone30_TightTTVA_pt500;   //!
+   TBranch        *b_v_m_ptvarcone30_TightTTVA_pt500;   //!
+   TBranch        *b_v_m_ptvarcone30_TightTTVA_pt500_fsr;   //!
+   TBranch        *b_v_e_ptcone20_TightTTVA_pt1000;   //!
+   TBranch        *b_v_m_ptcone20_TightTTVA_pt1000;   //!
+   TBranch        *b_v_m_ptcone20_TightTTVA_pt1000_fsr;   //!
+   TBranch        *b_v_e_ptcone20_TightTTVA_pt500;   //!
+   TBranch        *b_v_m_ptcone20_TightTTVA_pt500;   //!
+   TBranch        *b_v_m_ptcone20_TightTTVA_pt500_fsr;   //!
+   TBranch        *b_v_e_neflowisol20;   //!
+   TBranch        *b_v_m_neflowisol20;   //!
+   TBranch        *b_v_m_neflowisol20_fsr;   //!
    TBranch        *b_v_truth_l_tlv;   //!
    TBranch        *b_v_truth_l_pdgId;   //!
    TBranch        *b_v_truth_l_fromTau;   //!
@@ -130,9 +182,9 @@ ana_base::ana_base(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("mc16_13TeV.364243.Sherpa_222_NNPDF30NNLO_WWZ_4l2v_EW6.deriv.DAOD_STDM3.e5887_s3126_r9364_p4097.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("mc16_13TeV.364243.Sherpa_222_NNPDF30NNLO_WWZ_4l2v_EW6.deriv.DAOD_STDM3.e5887_s3126_r10201_p4097.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("mc16_13TeV.364243.Sherpa_222_NNPDF30NNLO_WWZ_4l2v_EW6.deriv.DAOD_STDM3.e5887_s3126_r9364_p4097.root");
+         f = new TFile("mc16_13TeV.364243.Sherpa_222_NNPDF30NNLO_WWZ_4l2v_EW6.deriv.DAOD_STDM3.e5887_s3126_r10201_p4097.root");
       }
       f->GetObject("tree_NOMINAL",tree);
 
@@ -181,17 +233,28 @@ void ana_base::Init(TTree *tree)
    v_e_LHTight = 0;
    v_e_ambiguous = 0;
    v_e_fwd = 0;
-   v_e_wgt = 0;
+   v_e_passIso = 0;
+   v_e_wgtLoose = 0;
+   v_e_wgtTight = 0;
+   v_e_wgtIso = 0;
    v_m_tlv = 0;
    v_m_pid = 0;
-   v_m_wgt = 0;
    v_m_d0 = 0;
    v_m_lowpt = 0;
+   v_m_passIso = 0;
+   v_m_passIsoVarRad = 0;
+   v_m_wgtLoose = 0;
+   v_m_wgtIso = 0;
+   v_m_wgtIsoVarRad = 0;
    v_m_tlv_fsr = 0;
    v_m_pid_fsr = 0;
-   v_m_wgt_fsr = 0;
    v_m_d0_fsr = 0;
    v_m_lowpt_fsr = 0;
+   v_m_passIso_fsr = 0;
+   v_m_passIsoVarRad_fsr = 0;
+   v_m_wgtLoose_fsr = 0;
+   v_m_wgtIso_fsr = 0;
+   v_m_wgtIsoVarRad_fsr = 0;
    v_j_tlv = 0;
    v_j_btag60 = 0;
    v_j_btag70 = 0;
@@ -203,6 +266,21 @@ void ana_base::Init(TTree *tree)
    v_j_wgt_btag85 = 0;
    v_j_btagCont = 0;
    v_j_wgt_btagCont = 0;
+   v_e_ptvarcone30_TightTTVA_pt1000 = 0;
+   v_m_ptvarcone30_TightTTVA_pt1000 = 0;
+   v_m_ptvarcone30_TightTTVA_pt1000_fsr = 0;
+   v_e_ptvarcone30_TightTTVA_pt500 = 0;
+   v_m_ptvarcone30_TightTTVA_pt500 = 0;
+   v_m_ptvarcone30_TightTTVA_pt500_fsr = 0;
+   v_e_ptcone20_TightTTVA_pt1000 = 0;
+   v_m_ptcone20_TightTTVA_pt1000 = 0;
+   v_m_ptcone20_TightTTVA_pt1000_fsr = 0;
+   v_e_ptcone20_TightTTVA_pt500 = 0;
+   v_m_ptcone20_TightTTVA_pt500 = 0;
+   v_m_ptcone20_TightTTVA_pt500_fsr = 0;
+   v_e_neflowisol20 = 0;
+   v_m_neflowisol20 = 0;
+   v_m_neflowisol20_fsr = 0;
    v_truth_l_tlv = 0;
    v_truth_l_pdgId = 0;
    v_truth_l_fromTau = 0;
@@ -225,17 +303,28 @@ void ana_base::Init(TTree *tree)
    fChain->SetBranchAddress("v_e_LHTight", &v_e_LHTight, &b_v_e_LHTight);
    fChain->SetBranchAddress("v_e_ambiguous", &v_e_ambiguous, &b_v_e_ambiguous);
    fChain->SetBranchAddress("v_e_fwd", &v_e_fwd, &b_v_e_fwd);
-   fChain->SetBranchAddress("v_e_wgt", &v_e_wgt, &b_v_e_wgt);
+   fChain->SetBranchAddress("v_e_passIso", &v_e_passIso, &b_v_e_passIso);
+   fChain->SetBranchAddress("v_e_wgtLoose", &v_e_wgtLoose, &b_v_e_wgtLoose);
+   fChain->SetBranchAddress("v_e_wgtTight", &v_e_wgtTight, &b_v_e_wgtTight);
+   fChain->SetBranchAddress("v_e_wgtIso", &v_e_wgtIso, &b_v_e_wgtIso);
    fChain->SetBranchAddress("v_m_tlv", &v_m_tlv, &b_v_m_tlv);
    fChain->SetBranchAddress("v_m_pid", &v_m_pid, &b_v_m_pid);
-   fChain->SetBranchAddress("v_m_wgt", &v_m_wgt, &b_v_m_wgt);
    fChain->SetBranchAddress("v_m_d0", &v_m_d0, &b_v_m_d0);
    fChain->SetBranchAddress("v_m_lowpt", &v_m_lowpt, &b_v_m_lowpt);
+   fChain->SetBranchAddress("v_m_passIso", &v_m_passIso, &b_v_m_passIso);
+   fChain->SetBranchAddress("v_m_passIsoVarRad", &v_m_passIsoVarRad, &b_v_m_passIsoVarRad);
+   fChain->SetBranchAddress("v_m_wgtLoose", &v_m_wgtLoose, &b_v_m_wgtLoose);
+   fChain->SetBranchAddress("v_m_wgtIso", &v_m_wgtIso, &b_v_m_wgtIso);
+   fChain->SetBranchAddress("v_m_wgtIsoVarRad", &v_m_wgtIsoVarRad, &b_v_m_wgtIsoVarRad);
    fChain->SetBranchAddress("v_m_tlv_fsr", &v_m_tlv_fsr, &b_v_m_tlv_fsr);
    fChain->SetBranchAddress("v_m_pid_fsr", &v_m_pid_fsr, &b_v_m_pid_fsr);
-   fChain->SetBranchAddress("v_m_wgt_fsr", &v_m_wgt_fsr, &b_v_m_wgt_fsr);
    fChain->SetBranchAddress("v_m_d0_fsr", &v_m_d0_fsr, &b_v_m_d0_fsr);
    fChain->SetBranchAddress("v_m_lowpt_fsr", &v_m_lowpt_fsr, &b_v_m_lowpt_fsr);
+   fChain->SetBranchAddress("v_m_passIso_fsr", &v_m_passIso_fsr, &b_v_m_passIso_fsr);
+   fChain->SetBranchAddress("v_m_passIsoVarRad_fsr", &v_m_passIsoVarRad_fsr, &b_v_m_passIsoVarRad_fsr);
+   fChain->SetBranchAddress("v_m_wgtLoose_fsr", &v_m_wgtLoose_fsr, &b_v_m_wgtLoose_fsr);
+   fChain->SetBranchAddress("v_m_wgtIso_fsr", &v_m_wgtIso_fsr, &b_v_m_wgtIso_fsr);
+   fChain->SetBranchAddress("v_m_wgtIsoVarRad_fsr", &v_m_wgtIsoVarRad_fsr, &b_v_m_wgtIsoVarRad_fsr);
    fChain->SetBranchAddress("MET", &MET, &b_MET);
    fChain->SetBranchAddress("METSig", &METSig, &b_METSig);
    fChain->SetBranchAddress("v_j_tlv", &v_j_tlv, &b_v_j_tlv);
@@ -249,6 +338,21 @@ void ana_base::Init(TTree *tree)
    fChain->SetBranchAddress("v_j_wgt_btag85", &v_j_wgt_btag85, &b_v_j_wgt_btag85);
    fChain->SetBranchAddress("v_j_btagCont", &v_j_btagCont, &b_v_j_btagCont);
    fChain->SetBranchAddress("v_j_wgt_btagCont", &v_j_wgt_btagCont, &b_v_j_wgt_btagCont);
+   fChain->SetBranchAddress("v_e_ptvarcone30_TightTTVA_pt1000", &v_e_ptvarcone30_TightTTVA_pt1000, &b_v_e_ptvarcone30_TightTTVA_pt1000);
+   fChain->SetBranchAddress("v_m_ptvarcone30_TightTTVA_pt1000", &v_m_ptvarcone30_TightTTVA_pt1000, &b_v_m_ptvarcone30_TightTTVA_pt1000);
+   fChain->SetBranchAddress("v_m_ptvarcone30_TightTTVA_pt1000_fsr", &v_m_ptvarcone30_TightTTVA_pt1000_fsr, &b_v_m_ptvarcone30_TightTTVA_pt1000_fsr);
+   fChain->SetBranchAddress("v_e_ptvarcone30_TightTTVA_pt500", &v_e_ptvarcone30_TightTTVA_pt500, &b_v_e_ptvarcone30_TightTTVA_pt500);
+   fChain->SetBranchAddress("v_m_ptvarcone30_TightTTVA_pt500", &v_m_ptvarcone30_TightTTVA_pt500, &b_v_m_ptvarcone30_TightTTVA_pt500);
+   fChain->SetBranchAddress("v_m_ptvarcone30_TightTTVA_pt500_fsr", &v_m_ptvarcone30_TightTTVA_pt500_fsr, &b_v_m_ptvarcone30_TightTTVA_pt500_fsr);
+   fChain->SetBranchAddress("v_e_ptcone20_TightTTVA_pt1000", &v_e_ptcone20_TightTTVA_pt1000, &b_v_e_ptcone20_TightTTVA_pt1000);
+   fChain->SetBranchAddress("v_m_ptcone20_TightTTVA_pt1000", &v_m_ptcone20_TightTTVA_pt1000, &b_v_m_ptcone20_TightTTVA_pt1000);
+   fChain->SetBranchAddress("v_m_ptcone20_TightTTVA_pt1000_fsr", &v_m_ptcone20_TightTTVA_pt1000_fsr, &b_v_m_ptcone20_TightTTVA_pt1000_fsr);
+   fChain->SetBranchAddress("v_e_ptcone20_TightTTVA_pt500", &v_e_ptcone20_TightTTVA_pt500, &b_v_e_ptcone20_TightTTVA_pt500);
+   fChain->SetBranchAddress("v_m_ptcone20_TightTTVA_pt500", &v_m_ptcone20_TightTTVA_pt500, &b_v_m_ptcone20_TightTTVA_pt500);
+   fChain->SetBranchAddress("v_m_ptcone20_TightTTVA_pt500_fsr", &v_m_ptcone20_TightTTVA_pt500_fsr, &b_v_m_ptcone20_TightTTVA_pt500_fsr);
+   fChain->SetBranchAddress("v_e_neflowisol20", &v_e_neflowisol20, &b_v_e_neflowisol20);
+   fChain->SetBranchAddress("v_m_neflowisol20", &v_m_neflowisol20, &b_v_m_neflowisol20);
+   fChain->SetBranchAddress("v_m_neflowisol20_fsr", &v_m_neflowisol20_fsr, &b_v_m_neflowisol20_fsr);
    fChain->SetBranchAddress("v_truth_l_tlv", &v_truth_l_tlv, &b_v_truth_l_tlv);
    fChain->SetBranchAddress("v_truth_l_pdgId", &v_truth_l_pdgId, &b_v_truth_l_pdgId);
    fChain->SetBranchAddress("v_truth_l_fromTau", &v_truth_l_fromTau, &b_v_truth_l_fromTau);

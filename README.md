@@ -45,3 +45,8 @@ This code can:
  - `cd ../run`
  - `./run test`
 if you are not working in UMATLAS server, you might need to change `file.list` first!!!
+
+-----------------------------------------------------
+5. Condor
+-----------------------------------------------------
+  1. to pass jobs to condor, you must have a valid proxy by `voms-proxy-init --voms atlas --valid 168:00`

@@ -40,13 +40,13 @@ def shape_compare(file_name_list, var_name_list, extra_name="shape"):
         input_file.Close()
 
 if __name__=="__main__":
-	var_name_list=[]
-	file_name_list=["llll","ggllll_130M4l","WWZ_4l2v"]
-	channel_name_list=["WWZ_SF_inZ","WWZ_SF_noZ","WWZ_em"]
-	para_name_list=["base","fwde","lowptm"]
+    var_name_list=[]
+    file_name_list=["llll","ggllll_130M4l","WWZ_4l2v"]
+    channel_name_list=["WWZ_SF_inZ","WWZ_SF_noZ","WWZ_em"]
+    para_name_list=["base","fwde","lowptm"]
         for channel_name in channel_name_list:
-		for para_name in para_name_list:
-			for i in range(1,8):
-				var_name_list.append(channel_name+'_'+para_name+'_'+'lepton_pt'+str(i))
-				var_name_list.append(channel_name+'_'+para_name+'_'+'lepton_eta'+str(i))
-	shape_compare(file_name_list,var_name_list)
+        for para_name in para_name_list:
+            for i in range(1,8):
+                var_name_list.append(channel_name+'_'+para_name+'_'+'lepton_pt'+str(i))
+                var_name_list.append(channel_name+'_'+para_name+'_'+'lepton_eta'+str(i))
+    shape_compare(file_name_list,var_name_list)
