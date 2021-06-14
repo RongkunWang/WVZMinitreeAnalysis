@@ -40,6 +40,7 @@ This code can:
 4. How to run this code
 
 -----------------------------------------------------
+ - `source setup.sh`
  - `cd build/`
  - `make`
  - `cd ../run`
